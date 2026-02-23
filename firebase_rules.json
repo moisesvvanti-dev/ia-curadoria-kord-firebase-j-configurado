@@ -1,0 +1,177 @@
+{
+    "rules": {
+        ".read": true,
+        "users": {
+            "$uid": {
+                ".write": "auth != null && auth.uid === $uid",
+                ".read": true
+            }
+        },
+        "servers": {
+            ".write": "auth != null",
+            ".read": true,
+            "$serverId": {
+                "channels": {
+                    "$channelId": {
+                        "messages": {
+                            ".write": "auth != null",
+                            ".indexOn": [
+                                "time"
+                            ]
+                        }
+                    }
+                },
+                "members": {
+                    ".write": "auth != null"
+                },
+                "pinnedMessages": {
+                    ".write": "auth != null"
+                },
+                "settings": {
+                    ".write": "auth != null"
+                }
+            }
+        },
+        "forums": {
+            ".write": "auth != null",
+            ".read": true,
+            ".indexOn": [
+                "time"
+            ]
+        },
+        "voice_rooms": {
+            ".write": "auth != null",
+            ".read": true,
+            "$roomId": {
+                "participants": {
+                    ".write": "auth != null",
+                    "$uid": {
+                        ".write": "auth != null"
+                    }
+                },
+                "audio_chunks": {
+                    ".write": "auth != null",
+                    "$uid": {
+                        ".write": "auth != null && auth.uid === $uid"
+                    }
+                }
+            }
+        },
+        "friendships": {
+            ".write": "auth != null",
+            ".read": "auth != null",
+            "$friendshipId": {
+                ".write": "auth != null"
+            }
+        },
+        "friend_requests": {
+            ".write": "auth != null",
+            ".read": "auth != null",
+            "$requestId": {
+                ".write": "auth != null"
+            }
+        },
+        "blocked_users": {
+            "$uid": {
+                ".write": "auth != null && auth.uid === $uid",
+                ".read": "auth != null && auth.uid === $uid"
+            }
+        },
+        "direct_messages": {
+            ".write": "auth != null",
+            ".read": "auth != null",
+            "$chatId": {
+                ".write": "auth != null",
+                ".indexOn": [
+                    "time"
+                ]
+            }
+        },
+        "global_notifications": {
+            ".write": "auth != null",
+            ".read": true,
+            ".indexOn": [
+                "time"
+            ]
+        },
+        "file_shares": {
+            ".write": "auth != null",
+            ".read": true,
+            "$fileId": {
+                ".write": "auth != null"
+            }
+        },
+        "user_settings": {
+            "$uid": {
+                ".write": "auth != null && auth.uid === $uid",
+                ".read": "auth != null && auth.uid === $uid"
+            }
+        },
+        "presence": {
+            ".write": "auth != null",
+            ".read": true,
+            "$uid": {
+                ".write": "auth != null && auth.uid === $uid"
+            }
+        },
+        "typing_indicators": {
+            ".write": "auth != null",
+            ".read": true
+        },
+        "nicknames": {
+            ".read": true,
+            ".write": "auth != null"
+        },
+        "system_config": {
+            ".write": "auth != null"
+        },
+        "changelog": {
+            ".write": "auth != null",
+            ".indexOn": [
+                "timestamp"
+            ]
+        },
+        "popular_stats": {
+            "$week_id": {
+                "$tool_id": {
+                    ".write": "!data.exists() || newData.val() > data.val()",
+                    ".validate": "newData.isNumber()"
+                }
+            }
+        },
+        "search_activity": {
+            ".write": true,
+            "$entry_id": {
+                ".validate": "newData.hasChildren(['query', 'timestamp'])"
+            }
+        },
+        "access_logs": {
+            ".write": true,
+            "$entry_id": {
+                ".validate": "newData.hasChildren(['timestamp', 'userAgent'])"
+            }
+        },
+        "discovery_queue": {
+            ".write": true,
+            "$entry_id": {
+                ".validate": "newData.isString()"
+            }
+        },
+        "bug_reports": {
+            ".write": true,
+            "$report_id": {
+                ".validate": "newData.hasChildren(['type', 'description', 'timestamp']) && newData.child('description').val().length < 2000 && newData.child('type').val().length < 50 && newData.child('page').val().length < 100 && newData.child('timestamp').val() <= now"
+            }
+        },
+        "supporters": {
+            ".write": "auth != null",
+            ".indexOn": [
+                "total_amount"
+            ]
+        },
+        "$other": {
+            ".write": "auth != null",
+            ".read": true
+        }
+    }
+}
