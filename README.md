@@ -1,88 +1,53 @@
-# 🌌 Luminous & Kord System Architecture
+# 🌌 Luminous & Kord — Live Testing Environment
 
-![Banner](https://img.shields.io/badge/Status-Active_Development-success?style=for-the-badge&logo=firebase) ![Version](https://img.shields.io/badge/Version-v9.0_Stable-blue?style=for-the-badge) ![Tech](https://img.shields.io/badge/Stack-JS_|_Firebase_|_WebRTC-orange?style=for-the-badge&logo=javascript)
+![Banner](https://img.shields.io/badge/Status-Beta_Testing-success?style=for-the-badge&logo=firebase) ![Version](https://img.shields.io/badge/Version-v9.0_Live-blue?style=for-the-badge) ![Tech](https://img.shields.io/badge/Stack-JS_|_Firebase_|_WebRTC-orange?style=for-the-badge&logo=javascript)
 
-Bem-vindo ao repositório do **Luminous & Kord**, uma plataforma unificada de curadoria avançada de IAs (Luminous) integrada a um ecossistema de comunicação em tempo real de altíssima fidelidade (Kord Meet).
+Bem-vindo ao repositório de testes do **Luminous & Kord**! 
 
-Desenvolvido com foco absoluto em **performance**, **design premium (Glassmorphism + Dark Mode)** e **privacidade on-device**, o projeto consolida dezenas de utilitários em um ambiente web limpo e ágil (Serverless via Firebase).
+Antes de colocarmos a mão na massa para alterar o código, **precisamos da sua ajuda para quebrar o sistema.** O objetivo desta versão ao vivo é encontrar bugs na prática de uso diário, registrar falhas de UI e estressar as defesas da aplicação.
 
----
-
-## 🚀 1. Luminous Engine (Curadoria de IAs)
-O módulo principal que o usuário acessa ao carregar a plataforma. Um diretório gigante de Inteligências Artificiais voltado para profissionais.
-
-*   **Busca Semântica & Discovery Engine:** Busca instantânea (debounce) com rastreamento analítico. Termos não encontrados são enviados a uma Fila de Descoberta (`discovery_queue`) no Firebase para curadoria humana.
-*   **Algoritmo de Tendências Global:** Sistema de rastreamento de uso (`ClickTracker`) que computa cliques e monta um ranking automático semanal das top 5 IAs mais populares.
-*   **Sistema de Favoritos On-Device:** Salva e gerencia os cards favoritos localmente, reduzindo carregamentos em nuvem.
-*   **Eco-Mode & Modo Anônimo:** Usuários podem desligar animações visuais para economizar bateria (Eco) e desativar rastreamento analítico (Anônimo).
-*   **Modo Noturno (Light/Dark Toggle):** Motor de temas ajustável on-the-fly (`theme_engine.js`).
-*   **Avisos Push Globais:** Banners que "caem do topo" para todos os usuários notificando novidades importantes puxadas remotamente.
+🔗 **Acesse o ambiente de testes aqui:** [https://kordtesters.netlify.app/](https://kordtesters.netlify.app/)
 
 ---
 
-## 💬 2. Kord Meet (O "Discord" Nativo)
-A aba lateral do Luminous dá acesso ao **Kord**, uma aplicação de chat colossal que roda integralmente via Web e Firebase Realtime Database. As funcionalidades de chat são divididas em categorias:
+## 🎯 Objetivo dos Testadores (Bug Hunting)
 
-*   **Fórum Geral:** Um ambiente público (read-only para usuários normais, editável por SuperAdmins).
-*   **Private Direct Messages (DMs):** Criptografia de ponta a ponta e histórico isolado (1-on-1).
-*   **Grupos Privados:** Bate-papos com dezenas de instâncias rodando membros ilimitados, edição de ícone e controles locais.
-*   **Servidores & Canais:** Infraestrutura idêntica ao Discord. Owners podem criar um Server, canais de texto e compartilhar link de convites.
-    *   *Sistema de Permissões:* Mute/Kick/Ban para membros tóxicos, exclusividade de Donos/Admins.
+Sua missão inicial é acessar a URL acima simulando um usuário comum ou mal-intencionado e testar exaustivamente os módulos abaixo. Reporte qualquer comportamento estranho, lentidão ou tela travada relatando o fluxo que você executou. Depois que mapearmos os problemas, nós consertaremos no código fonte!
 
-### 🎨 Edição Otimizada de Perfil
-*   **Paleta de Cores Dinâmica:** Os usuários podem selecionar uma cor de perfil em tempo real a partir de uma grade renderizada nativamente (sem depender do seletor feio do Windows/Navegador).
-*   **Cooldown de Nickname:** Sistema atrelado a banco de dados impedindo trocas massivas de apelidos num período de 7 dias (Prevenção de Spam).
+### 🧪 Área 1: Luminous Engine (Curadoria de IAs)
+O Luminous é o catálogo inicial da aplicação. Tente:
+1.  **Pesquisar rapidamente e apagar letras:** O sistema (Debounce) consegue acompanhar sua digitação ou ele trava?
+2.  **Clicar em Várias IAs:** Navegue pelos cards, clique em "Apoiar Projeto", "Changelog" e verifique as transições (Glassmorphism).
+3.  **Salvar Favoritos:** Favorite IAs, vá na aba "Salvos" e atualize a página. Eles continuam lá?
+4.  **Temas e Eco-Mode:** Brinque com o Dark/Light theme e com o Eco-Mode (desligar animações). Alguma página quebrou as cores?
 
-### 🔥 Recursos Embutidos no Chat (Mensagens)
-Ao clicar com o botão direito `(ou tocar no mobile)` em uma mensagem, um menu global surge operando funções de alto nível:
-1.  **Edição / Deleção Restrita:** Apenas os autores nativos (ou donos master) podem apagar/editar mensagens do ar.
-2.  **Fixação (`pin`):** Exibição das mensagens-chave em um drawer lateral na UI (Pins).
-3.  **Real-Time Link Sharing:** Cópias diretas de links (`?msg=Id`). A Luminous injeta inteligência de quebrar a URL, varrer todo o sistema, carregar o chat certo e dar um *scroll/highlight* mágico na mensagem solicitada sem perder o layout.
-4.  **Audio Translate On-Device (Groq API):**
-    *   Um usuário pode selecionar qualquer áudio ou texto e rodar um modelo (ex: Whisper ou Mixtral via Groq Hardware) direto no chat para extrair ou traduzir contextos de Francês para Inglês, etc., tudo verbalizado por TTS.
+### 💬 Área 2: Kord Meet (Comunicação)
+Acesse a aba `Kord (Meet)` na lateral. Crie uma conta no sistema (leva 10 segundos) e tente quebrar o chat:
+1.  **Interações de Mensagem:** Clique com botão direito (ou segure no celular) em qualquer mensagem. Teste as opções: Fixar, Copiar ID, Responder. 
+2.  **O Teste do Link:** Copie o **"Link Direto"** de uma mensagem. Abra uma aba anônima ou envie pra um amigo. Ao clicar, o sistema deve ignorar o carregamento normal, voar direto pro Servidor correto e rolar a página magicamente até a mensagem exata com uma animação roxa. Funciona se você não estiver logado?
+3.  **Avatar & Cores:** Altere seu nickname e as cores da sua foto (no Ícone da Engrenagem). As pessoas no chat veem essa mudança em tempo real?
+4.  **Tradução On-Device (Groq API):** Tente mandar enviar comandos pro Translator (bot de IA local) ou ouvir uma mensagem de texto ser traduzida e falada via TTS (Áudio Artificial). Algum delay ou alucinação?
 
----
+### 🔒 Área 3: Luminous Shield (Tentativa de Hacker)
+O Kord odeia ser espionado. Desafiamos você a tentar roubar o código:
+1.  **Clique Direito:** Tente inspecionar elemento.
+2.  **Teclado:** F12, Ctrl+Shift+I, Ctrl+Shift+C.  
+3.  **Navegador:** Se você arranjar um jeito de abrir a aba de Desenvolvedor (DevTools) pelos menus próprios do seu Chrome ou Safari, o **Debugger Trap** deve reagir em menos de 1 segundo cobrindo sua tela com uma Mensagem de Bloqueio Vermelha gigante e inativando a aba inteira. Conseguiu burlar?
 
-## 🎥 3. WebRTC Call & Transmissão On-Device
-O Kord possui um pipeline de conexão assíncrona baseada no framework `Peer.js` rodando um protocolo STUN próprio (com fallback para os servidores de nuvem).
-*   **Chamadas Peer-to-Peer:** Conversas limpas 1x1 sem delay de servidor.
-*   **Screen Share Profissional:** Possibilidade de transmitir a tela ou guias do navegador em abas conjuntas simultâneas.
-*   **Status Dinâmico (VAD):** Indicadores de áudio verde detectam quando você ou a pessoa na linha estão falando, para coibir problemas de ruído.
-
----
-
-## 💳 4. Pagamentos P2P Nativos (Inline Smart Buttons)
-Como monetizar e pagar parceiros sem sair da aplicação?
-*   O usuário pode ir em um contato e enviar dinheiro a ele via **PayPal JS SDK**.
-*   A página NUNCA recarrega. Em vez de enviar o usuário para frente e para trás com links velhos, O modal exibe um SDK nativo do PayPal, criptografa a transação e pinga a `api` silenciosamente.
-*   *Auditoria:* Webhooks IPN são interceptados em segundo plano, mandando cópias de log para o administrador.
+### 💳 Área 4: Transações P2P Inline
+Encontre um contato no DM que tenha configurado e-mail do PayPal (no perfil dele).
+1. Clique em **Enviar via PayPal**. 
+2. Escolha o valor e clique "Avançar".
+3. **Ponto Crítico:** Ao invés de ser arremessado pra fora do site, um iFrame dinâmico e seguro com botões nativos do PayPal (amarelo e preto) devem abrir **ali mesmo no nosso design**, fluindo e voltando sutilmente (Fluxo Inline puro, Smart Buttons). Falhou? Deu erro carregando o frame?
 
 ---
 
-## 🤖 5. IA Generator Integrado (Design Automation)
-O Kord não é só curadoria, ele opera modelos próprios. Um comando inserido pelo usuário ativa um workflow para ele *Gerar* logos e texturas pelo chat. E não só imagens, há prompts que criam paletas inteiras de código se solicitados, utilizando a API fornecida.
+## 🛠 Para Visualizar os Erros (Antes de começar a arrumar o Código)
 
----
+Se você encontrar um problema nas rotinas acima no link [kordtesters](https://kordtesters.netlify.app/):
 
-## 🔒 6. Escudo de Segurança (Luminous Shield)
-Desenvolvido explicitamente contra roubo de código e invasões:
-1.  **Trava Anti-Inspeção Global:** Clique Direito desativado na raiz (`contextmenu`).
-2.  **Bloqueio de Teclas DevTools:** `F12`, `Ctrl+Shift+I`, `Ctrl+Shift+J`, `Ctrl+Shift+C`, `Ctrl+U`, `Ctrl+S` permanentemente interceptados e tornados inúteis.
-3.  **Debugger Trap Dinâmico:** Se pelo painel nativo do navegador o usuário conseguir abrir o console, o Shield trava o pipeline inteiro utilizando um loop infalível de `debugger`, que troca a interface visual por um layout de ERRO/BLOQUEIO inoperável, salvando a propriedade intelectual.
-4.  **Rate Limiter Front-End:** Bloqueio de submissão veloz contra sobrecarga nos reports de bug ou cliques no banco do Firebase. (Evita estouro de banda na conta Host).
+1. Vá na navegação Mobile ou Desktop do Luminous e clique no botão **Bug (Amarelo)**.
+2. Preencha e dispare lá mesmo (nosso log do Firebase guardará os dados).
+3. Se for um problema técnico para discussões aqui no GitHub ou com a IA, liste os *Issues* claramente documentando qual módulo explodiu!
 
----
-
-## 🛠 Arquitetura de Arquivos
-*   `index.html`: A Skeleton Main e Single Page App Loader.
-*   `app.js`: A engine de Busca, Cards, ClickTracker e Rotas do Luminous.
-*   `kord_core.js`: O monolito robusto de interações de Chat, Permissões, Context Menus e P2P Payments.
-*   `kord_auth.js`: Wrapper em cima do Firebase Auth gerindo estados e Profile Sync.
-*   `kord_webrtc.js`: Camada de mídia e WebSockets (Audio, Visão, Tela, Status Rings).
-*   `security.js`: O escudo global rodando antes do DOM se estabilizar.
-*   `theme_engine.js`: Pintura vetorial em CSS Variables em tempo real.
-*   `paypal_ipn.php`: Hook backend seguro para validação comercial P2P externa.
-
----
-
-*Luminous & Kord System — "A beleza da curadoria com o poder da comunicação unificada."*
+Após a fase de quebra, nós viremos arrumar o comportamento do repositório! Boas caçadas. 🛡️
