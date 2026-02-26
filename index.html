@@ -518,7 +518,7 @@
                                 </button>
                                 <div class="kord-rtc-divider"></div>
                                 <button onclick="toggleAITranslator()" id="kord-btn-ai-translate"
-                                    class="kord-rtc-btn kord-rtc-btn--ai" style="display:none;">
+                                    class="kord-rtc-btn kord-rtc-btn--ai">
                                     <span class="material-icons-round">translate</span>
                                     <span id="kord-ai-translate-label">IA Tradutor</span>
                                 </button>
@@ -586,6 +586,8 @@
                     class="material-icons-round">local_fire_department</span>Popular</a>
             <a href="#" class="mobile-nav-item" onclick="switchView('support'); return false;"><span
                     class="material-icons-round">volunteer_activism</span>Apoiar</a>
+            <a href="#" class="mobile-nav-item" onclick="switchView('kord'); return false;"
+                style="color: #6366f1;"><span class="material-icons-round">voice_chat</span>Kord</a>
             <a href="#" class="mobile-nav-item" onclick="switchView('changelog'); return false;"><span
                     class="material-icons-round">history</span>Updates</a>
             <a href="#" class="mobile-nav-item" onclick="openBugReport(); return false;" style="color: #f59e0b;"><span
@@ -977,7 +979,7 @@
                             </div>
                             <label
                                 style="display:flex; align-items:center; gap:10px; color:#cbd5e1; font-weight:400; margin-top:10px; font-size:0.85rem; cursor:pointer;">
-                                <input type="checkbox" id="kordTranslateTTS" checked
+                                <input type="checkbox" id="kordTranslateTTS"
                                     style="accent-color:var(--primary-color); width:16px; height:16px;">
                                 Ligar Síntese de Voz (Ouvir tradução automaticamente)
                             </label>

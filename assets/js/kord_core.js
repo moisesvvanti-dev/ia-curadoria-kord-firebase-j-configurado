@@ -1316,6 +1316,13 @@ function kordAttachChatListener(ref, container, type = 'chat') {
         if (container.querySelector(`[data-msg-id="${childSnap.key}"]`)) return;
         kordRenderMessage(childSnap.val(), childSnap.key, container, type);
     });
+
+    query.on('child_removed', childSnap => {
+        const msgEl = container.querySelector(`[data-msg-id="${childSnap.key}"]`);
+        if (msgEl) {
+            msgEl.remove();
+        }
+    });
 }
 
 function loadForums() {
