@@ -1,64 +1,60 @@
-<div align="center">
-  <img src="https://img.shields.io/badge/Status-Beta_Testing-success?style=for-the-badge&logo=firebase" alt="Status" />
-  <img src="https://img.shields.io/badge/Version-v9.0_Live-blue?style=for-the-badge" alt="Version" />
-  <img src="https://img.shields.io/badge/Stack-JS_|_Firebase_|_WebRTC-orange?style=for-the-badge&logo=javascript" alt="Stack" />
+# 🌌 Project Luminous & Kord V2.0
 
-  <h1>🌌 Luminous & Kord</h1>
-  <p><b>Uma plataforma completa de Catálogo de Inteligências Artificiais e Comunicação Real-Time WebRTC com Tradução Simultânea.</b></p>
-</div>
+Project Luminous é um ecossistema completo focado em **cibersegurança, automação, comunicação P2P e moderação assistida por Inteligência Artificial**. Projetado a partir do zero utilizando princípios modernos de *Liquid Glass* e arquitetura em tempo real via Firebase, Luminous conecta de segurança com um cliente web ultrasseguro (Kord).
 
 ---
 
-## 👨‍💻 Desenvolvedor
-**Moisés Vianna Vanti**
-*(Criador e Desenvolvedor Principal do Luminous & Kord)*
+## 🚀 O que o Luminous oferece? (Core Features)
+
+O painel centralizador (Luminous) entrega acesso a ferramentas agressivas e sistemas de automação criados para pentesters e pesquisadores de segurança.
+
+*   **💰 Sistema de Doação (PayPal IPN)**: Um painel de suporte automatizado via PayPal API, garantindo o selo de "Apoiador Verificado", tracking de receita e liberação instantânea de benefícios V.I.P para usuários cadastrados.
+*   **🛡️ Autenticação Unificada Firebase**: Sistema robusto de Login / Registro / Recuperação de Senha com persistência de sessões, perfis globais e geração automática de Nicks únicos.
+*   **📊 Luminous Admin Dashboard**: Painel de administração *Real-Time*, restrito via servidor, contendo: estatísticas dinâmicas, gerenciamento de Doadores, visualizador de acesso a logs, histórico de bugs, ranking de pesquisas no sistema e gerador de Notificações Globais via Push.
 
 ---
 
-## 📖 O que é o Projeto?
+## 🔮 Kord (Premium Chat & Voice Client)
 
-O projeto é dividido em dois grandes ecossistemas que funcionam em harmonia dentro de uma única aplicação SPA (Single Page Application):
+O **Kord** é a evolução do bate-papo: um cliente WebRTC + Firebase integrado ao Luminous. Focado em privacidade, velocidade e customização gráfica profunda.
 
-1. **Luminous Engine:** Um catálogo curado e dinâmico focado em apresentar e gerenciar Inteligências Artificiais. Possui busca ultrarrápida (Debounce), interface em Glassmorphism responsivo, suporte dinâmico a temas (Light/Dark/Eco-Mode) e mecânicas de favoritos para facilitar o acesso às melhores ferramentas disponíveis na Web.
-2. **Kord Meet:** Um robusto sistema de comunicação e rede social interna. Substitui a necessidade de aplicativos pesados através de um chat em tempo real com mensagens, fóruns e um sistema avançado de Walkie-Talkie/Chamadas de Vídeo via **WebRTC**. O Kord conta inclusive com um trunfo excepcional: **Tradução de Voz Simultânea por IA em Tempo Real (Powered by Groq)**, permitindo que pessoas de idiomas diferentes se comuniquem por áudio nativamente.
+### 🎭 Personalização Estrema (Theme Engine)
+*   **Seletor de Cores Dinâmico**: O Kord adapta a inteface, os botões, os brilhos neon (glow) e as sombras das caixas baseado unicamente na cor Hex escolhida pelo usuário.
+*   **Liquid Glass Design**: O aplicativo foi estruturado com CSS Backdrop-filters e gradients radiais, entregando uma interface hiper realista de vidro líquido e bordas suaves.
+*   **Efeitos Visuais Interativos (FX Layer)**: Um motor de partículas renderiza animações globais impressionantes por toda a plataforma usando CSS Puro + JS Injection. Contém efeitos exóticos como:
+    *   🔥 **Fogo**: Partículas escaláveis na base do aplicativo.
+    *   💨 **Fumaça**: Névoa suave fluindo verticalmente.
+    *   ❄️ **Gelo**: Cristalização progressiva das bordas.
+    *   ⚡ **Neon**: Pulsação cyberpunk de alta voltagem.
+    *   🌊 **Aurora**: Ondulações de luzes boreais no fundo.
+    *   🌌 **Matrix**: Cascata digital de dados descendentes.
+    *   🔮 **Partículas / ✨ Brilho**: Elementos flutuantes interativos brilhantes.
 
-🔗 **Acesse o ambiente de testes aqui:** [https://kordtesters.netlify.app/](https://kordtesters.netlify.app/)
+### 💬 Comunicação e Conectividade
+*   **Servidores e Canais**: Comunidades (Servidores) com divisão por Categorias e Canais focados em texto ou voz.
+*   **Chat Direto (DM) e Grupos**: Chat P2P instantâneo com suporte a grupos dinâmicos, criação de convites (`/invite`) e gerenciamento de membros.
+*   **WebRTC Voz e Vídeo**: Chamadas de áudio e vídeo em grupo ou privadas habilitando P2P real e latência próxima a zero. Controles avançados de silenciador de microfone, ensurdecimento e compartilhamento seguro da tela.
+*   **Compartilhamento de Arquivos via WebTorrent (P2P)**: O Kord permite compartilhamento de mídia sem consumo de banda do servidor central. Os arquivos são pulverizados via protocolo WebTorrent Magnético com expiração automática e streaming direto pela memória do navegador.
 
----
+### 🧠 Integração Nativa de I.A (Groq Api)
+*   **Tradutor Interativo em Tempo Real**: Uma IA residente escuta as mensagens e pode lê-las em voz alta usando SpeechSynthesis API nativo.
+*   **Tradutor Universal (Google Translate)**: Interface conectada à engine do Google para conversão em tempo real do idioma global da aplicação, permitindo a usuários do mundo todo explorarem o site sem barreiras.
+*   **Geração Inteligente de Respostas e Designers**: Módulos AI auxiliam diretamente no uso de comandos diários dentro das caixas de mensagem.
 
-## ✨ Principais Funcionalidades
+### 🚔 Kord Security & Moderation Engine
+A segurança do Kord não aceita falhas. Um módulo de proteção ultra restritivo defende a comunidade em tempo real.
 
-### 💬 Comunicação Kord
-- **Chat P2P & Fóruns:** Crie canais, envie mensagens de texto com links mágicos, gifs e arquivos.
-- **Chamadas de Voz e Vídeo (WebRTC):** Suporte a transmissão de Webcam, compartilhamento de tela e microfone com controles nativos de mute e deafen.
-- **Tradução Simultânea (Groq AI):** O Kord intercepta o microfone durante as chamadas, transcreve e traduz em tempo real (TTS opcional) o áudio para as pessoas na sala, quebrando as barreiras de linguagem automaticamente.
-- **Transações P2P Inline:** Sistema embarcado do PayPal (Smart Buttons) permite que os usuários enviem transferências/pagamentos de ponta a ponta sem nunca sair da interface de chat do Kord.
-
-### 🧪 Ecossistema Luminous
-- **UI Responsiva & Glassmorphism:** Elementos espelhados, animações suaves e renderização performática otimizada via DOM Virtual (criado via JS puro).
-- **Personalização de Perfil:** Os usuários podem definir cores temáticas ("Theme Color") que alteram como suas interfaces são geradas e apresentadas aos outros participantes dentro da sala, além de equipar decorações em avatares.
-- **Sistema Anti-Hacker (Luminous Shield):** O código possui "Debugger Traps" elaborados contra inspeção de elementos maliciosos, interceptadores de tráfego e DevTools, blindando a integridade da UI Reactiva.
-
----
-
-## 🛠 Tecnologias Utilizadas
-
-Este projeto foi construído utilizando tecnologias puras sem a necessidade de pacotes compilados pesados (Zero-Bundler), mantendo alto nível de segurança e responsividade:
-
-- **HTML5 & CSS3 Vanilla:** Com variáveis dinâmicas em CSS (`:root`), flexbox e manipulação de animações de chave.
-- **JavaScript Vanilla (ES6+):** Controle total de DOM, estado, MediaDevices API, SpeechSynthesis global e SpeechRecognition em tempo real.
-- **Firebase Realtime Database:** Controle de estado sincronizado de usuários onlines, canais, fóruns e histórico de mensagens com atualização `<100ms`.
-- **Firebase Authentication:** Gestão de login de contas, tokens seguros e perfis.
-- **WebRTC & MediaRecorder:** Captura e emissão em blocos do áudio para chamadas via walkie-talkie mode.
-- **Groq Whisper API:** Processamento massivo instantâneo para reconhecimento de fala neural usado no botão tradutor da chamada.
+*   **Fingerprint Anti-Fraude (HWID)**: O Kord assina criptograficamente o hardware do usuário (User Agent, Concurrency, Hardware Mem, Canvas, Langs) e gera um Serial ID fixo pseudo-anônimo que impede a criação de contas fakes se a máquina original for banida.
+*   **AI Anti-Porn/Pedophilia/Nazism (Zero Tolerância)**: O ato de apertar `[ENTER]` dispara um *hook* direto na Llama-3 70B (Groq) avaliando a toxicidade extrema (Nazismo, Pedofilia, Pornografia). Ao detectar a violação, o sistema bane o **HWID** e o **IP** permanentemente em milissegundos, antes mesmo de salvar no banco de dados, além de deletar **grupos, DMs ou Servidores inteiros** automaticamente.
+*   **Admin Reports e Banimento de Falsos Relatos**: Mensagens comuns podem ser denunciadas anonimamente via botão direito (Context Menu). Se o Admin, analisando a queixa, notar malícia por parte do denunciante (falso report / trolagem), um **Sistema de Punição Expressa** dentro do painel do Admin permite suspensões de 10 Dias automáticas a quem relatou, ou ao infrator original. O acúmulo de 3 suspensões temporárias converte-se automaticamente em **Banimento Permanente de Hardware**.
 
 ---
 
-## 🎯 Objetivo dos Testadores (Bug Hunting)
+## 🛠️ Stack Tecnológica
+*   **Frontend**: HTML5 Semântico, Vanilla JavaScript Módular. CSS3 Avançado (Flex/Grid, Animations, Backdrop Filters, Glassmorphism).
+*   **Backend / DB**: Google Firebase Realtime Database & Firebase Auth.
+*   **APIs**: PayPal API (Donate), Groq API (LLaMA 3.3 Versatile), WebTorrent, WebRTC (PeerJS).
+*   **Hospedagem**: Arquitetura Híbrida Web/Localhost.
 
-Se você foi convidado ao repositório de testes, sua missão é tentar quebrar o sistema! Tente forçar:
-
-1. Modificações de Avatar, Envio massivo de mensagens e Fóruns.
-2. Tentativas de inspecionar elemento (F12) para validar a persistência da proteção da malha (Luminous Shield).
-3. Entrar na central WebRTC e ligar a IA do microfone enquanto outro parceiro fala em russo ou inglês e validar o TTS.
-4. Caso aponte um defeito, utilize o ícone de **"Bug"** na barra de navegação amarela pra disparar o report! Boas caçadas. 🛡️
+---
+*Luminous / Kord v2.0 - Desenvolvido para estabilidade, agressividade estética e impenetrável segurança.*
