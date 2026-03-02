@@ -206,21 +206,6 @@ async function startKordVoiceCall() {
     if (typeof startRemoteAudioTranscription === 'function') {
         startRemoteAudioTranscription();
     }
-
-    // Set UI for Translator button based on current active state
-    const aiBtn = document.getElementById('kord-btn-ai-translate');
-    const aiLabel = document.getElementById('kord-ai-translate-label');
-    if (aiBtn) {
-        if (isAITranslatorActive) {
-            aiBtn.style.background = 'rgba(139,92,246,0.3)';
-            aiBtn.style.color = '#fff';
-            if (aiLabel) aiLabel.innerText = 'IA Ativa (Ouvindo)';
-        } else {
-            aiBtn.style.background = 'rgba(139,92,246,0.1)';
-            aiBtn.style.color = '#a78bfa';
-            if (aiLabel) aiLabel.innerText = 'IA Tradutor';
-        }
-    }
 }
 
 // Audio queue per peer to prevent overlap
@@ -1420,10 +1405,6 @@ function _findBestVoice(langCode) {
 
 function kordSpeakText(text, langCode) {
     if (!text) return;
-
-    const ttsCheckbox = document.getElementById('kordTranslateTTS');
-    if (ttsCheckbox && !ttsCheckbox.checked) return;
-
     window.speechSynthesis.cancel();
 
     const utterance = new SpeechSynthesisUtterance(text);

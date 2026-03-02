@@ -1,10 +1,27 @@
-// --- LUMINOUS ENGINE v9.0 (With Popular Tracking) ---
+// --- LUMINOUS ENGINE v9.1 (Category Fix + AI Expansion) ---
 
 let worker;
 let allItems = [];
 let displayedCount = 0;
 const BATCH_SIZE = 50;
 let currentCategory = 'All';
+
+// ============================================================
+// CATEGORY ALIAS MAP — Maps UI filter buttons to DB categories
+// ============================================================
+const CATEGORY_MAP = {
+    'Texto': ['Texto & Copy', 'LLM & Chatbots', 'Productivity', 'PDFs & Docs'],
+    'Design': ['Design', 'Generative Art', '3D Design'],
+    'Video': ['Video', 'Video AI', 'Vídeo / Edição'],
+    'Audio': ['Audio', 'Voice & Audio', 'Música / Áudio'],
+    'Dev': ['Dev', 'Dev & Codying'],
+    'Marketing': ['Marketing', 'Marketing & SEO', 'Business', 'Business Intelligence'],
+    'Tech Geral': ['Geral', 'Uncensored/Adult', 'HOT / Adulto', 'Science & Bio', 'Gaming & 3D', 'Auto & Transport', 'Agro & Food', 'Imobiliário'],
+    'Medicina': ['Medicina', 'Saúde / Medicina'],
+    'Direito': ['Direito', 'Jurídico / Advocacia'],
+    'Educacao': ['Education'],
+    'Financas': ['Finanças / Trading', 'Trading'],
+};
 
 // ============================================================
 // CLICK TRACKING SYSTEM (LocalStorage based)
@@ -140,6 +157,21 @@ window.switchView = function (viewName) {
     // Load changelog when changelog view is opened
     if (viewName === 'changelog' && typeof ChangelogManager !== 'undefined') {
         ChangelogManager.startListening();
+    }
+
+    // Load admin panel when admin view is opened (security check inside)
+    if (viewName === 'admin' && typeof loadAdminView === 'function') {
+        loadAdminView();
+    }
+
+    // Load wallet when wallet view is opened
+    if (viewName === 'wallet' && typeof KordWalletUI !== 'undefined') {
+        KordWalletUI.openWalletView();
+    }
+
+    // Render effects grid when settings view is opened
+    if (viewName === 'settings' && typeof renderEffectsGrid === 'function') {
+        renderEffectsGrid();
     }
 };
 
@@ -571,11 +603,21 @@ function renderBatch() {
 
     let targetItems = allItems;
     if (currentCategory !== 'All') {
-        const catLower = currentCategory.toLowerCase();
-        targetItems = allItems.filter(item =>
-            (item.category && item.category.toLowerCase().includes(catLower)) ||
-            (item.tags && item.tags.some(t => t.toLowerCase().includes(catLower)))
-        );
+        const aliases = CATEGORY_MAP[currentCategory];
+        if (aliases) {
+            const aliasLower = aliases.map(a => a.toLowerCase());
+            targetItems = allItems.filter(item => {
+                const cat = (item.category || '').toLowerCase();
+                return aliasLower.some(a => cat === a) ||
+                    (item.tags && item.tags.some(t => aliasLower.some(a => t.toLowerCase().includes(a))));
+            });
+        } else {
+            const catLower = currentCategory.toLowerCase();
+            targetItems = allItems.filter(item =>
+                (item.category && item.category.toLowerCase().includes(catLower)) ||
+                (item.tags && item.tags.some(t => t.toLowerCase().includes(catLower)))
+            );
+        }
     }
 
     if (displayedCount >= targetItems.length && displayedCount > 0) return;
@@ -637,6 +679,218 @@ function renderList(list, container, limit = null) {
     container.insertAdjacentHTML('beforeend', html);
 }
 
+// ============================================================
+// AUTO-TRANSLATE DESCRIPTIONS TO PORTUGUESE
+// ============================================================
+const _ptDict = [
+    // Phrases first (order matters: longer phrases before shorter words)
+    ['AI-powered', 'IA avançada para'],
+    ['AI powered', 'IA para'],
+    ['open-source', 'código aberto'],
+    ['Open-source', 'Código aberto'],
+    ['real-time', 'tempo real'],
+    ['Real-time', 'Tempo real'],
+    ['all-in-one', 'tudo-em-um'],
+    ['All-in-one', 'Tudo-em-um'],
+    ['plug-in', 'plugin'],
+    ['built-in', 'integrado'],
+    ['state-of-the-art', 'de última geração'],
+    ['no-code', 'sem código'],
+    ['low-code', 'low-code'],
+    ['end-to-end', 'de ponta a ponta'],
+    ['drag-and-drop', 'arrastar e soltar'],
+    ['out-of-the-box', 'pronto para usar'],
+    ['step-by-step', 'passo a passo'],
+    ['text-to-image', 'texto para imagem'],
+    ['text-to-video', 'texto para vídeo'],
+    ['text-to-speech', 'texto para fala'],
+    ['speech-to-text', 'fala para texto'],
+    ['text-to-music', 'texto para música'],
+    ['image-to-text', 'imagem para texto'],
+    ['content creation', 'criação de conteúdo'],
+    ['content marketing', 'marketing de conteúdo'],
+    ['machine learning', 'aprendizado de máquina'],
+    ['deep learning', 'aprendizado profundo'],
+    ['natural language processing', 'processamento de linguagem natural'],
+    ['natural language', 'linguagem natural'],
+    ['computer vision', 'visão computacional'],
+    ['data analysis', 'análise de dados'],
+    ['data analytics', 'análise de dados'],
+    ['data visualization', 'visualização de dados'],
+    ['data science', 'ciência de dados'],
+    ['social media', 'redes sociais'],
+    ['customer support', 'suporte ao cliente'],
+    ['customer service', 'atendimento ao cliente'],
+    ['customer experience', 'experiência do cliente'],
+    ['user experience', 'experiência do usuário'],
+    ['graphic design', 'design gráfico'],
+    ['web design', 'web design'],
+    ['workflow automation', 'automação de fluxos'],
+    ['task management', 'gerenciamento de tarefas'],
+    ['project management', 'gerenciamento de projetos'],
+    ['email marketing', 'email marketing'],
+    ['search engine', 'motor de busca'],
+    ['landing page', 'página de destino'],
+    ['e-commerce', 'e-commerce'],
+    ['supply chain', 'cadeia de suprimentos'],
+    ['use cases', 'casos de uso'],
+    ['use case', 'caso de uso'],
+    ['at scale', 'em escala'],
+    ['from scratch', 'do zero'],
+    ['in seconds', 'em segundos'],
+    ['in minutes', 'em minutos'],
+    ['with ease', 'com facilidade'],
+    ['and more', 'e muito mais'],
+    ['as well as', 'assim como'],
+    ['such as', 'como'],
+    ['based on', 'baseado em'],
+    ['powered by', 'alimentado por'],
+    ['designed for', 'projetado para'],
+    ['designed to', 'projetado para'],
+    ['built for', 'feito para'],
+    ['built on', 'construído sobre'],
+    ['created for', 'criado para'],
+    ['tailored for', 'sob medida para'],
+    ['optimized for', 'otimizado para'],
+    ['that helps', 'que ajuda a'],
+    ['that allows', 'que permite'],
+    ['that enables', 'que possibilita'],
+    ['that provides', 'que fornece'],
+    ['that offers', 'que oferece'],
+    ['that makes', 'que torna'],
+    ['that uses', 'que usa'],
+    ['that creates', 'que cria'],
+    ['that generates', 'que gera'],
+    ['that transforms', 'que transforma'],
+    ['that converts', 'que converte'],
+    ['that automates', 'que automatiza'],
+    ['that analyzes', 'que analisa'],
+    ['that simplifies', 'que simplifica'],
+    ['that streamlines', 'que otimiza'],
+    ['that combines', 'que combina'],
+    ['that integrates', 'que integra'],
+    ['that leverages', 'que utiliza'],
+    ['that utilizes', 'que utiliza'],
+];
+
+const _ptWords = [
+    // Single-word replacements (applied after phrases)
+    [/\bCreate\b/g, 'Crie'], [/\bcreate\b/g, 'criar'],
+    [/\bGenerate\b/g, 'Gere'], [/\bgenerate\b/g, 'gerar'],
+    [/\bBuild\b/g, 'Construa'], [/\bbuild\b/g, 'construir'],
+    [/\bAutomate\b/g, 'Automatize'], [/\bautomate\b/g, 'automatizar'],
+    [/\bAnalyze\b/g, 'Analise'], [/\banalyze\b/g, 'analisar'],
+    [/\bOptimize\b/g, 'Otimize'], [/\boptimize\b/g, 'otimizar'],
+    [/\bImprove\b/g, 'Melhore'], [/\bimprove\b/g, 'melhorar'],
+    [/\bEnhance\b/g, 'Aprimore'], [/\benhance\b/g, 'aprimorar'],
+    [/\bTransform\b/g, 'Transforme'], [/\btransform\b/g, 'transformar'],
+    [/\bConvert\b/g, 'Converta'], [/\bconvert\b/g, 'converter'],
+    [/\bManage\b/g, 'Gerencie'], [/\bmanage\b/g, 'gerenciar'],
+    [/\bDiscover\b/g, 'Descubra'], [/\bdiscover\b/g, 'descobrir'],
+    [/\bExplore\b/g, 'Explore'], [/\bexplore\b/g, 'explorar'],
+    [/\bSimplify\b/g, 'Simplifique'], [/\bsimplify\b/g, 'simplificar'],
+    [/\bStreamline\b/g, 'Otimize'], [/\bstreamline\b/g, 'otimizar'],
+    [/\bMonitor\b/g, 'Monitore'], [/\bmonitor\b/g, 'monitorar'],
+    [/\bTrack\b/g, 'Rastreie'], [/\btrack\b/g, 'rastrear'],
+    [/\bDesign\b/g, 'Projete'], [/\bdesigns?\b/g, 'designs'],
+    [/\bWrite\b/g, 'Escreva'], [/\bwrite\b/g, 'escrever'],
+    [/\bEdit\b/g, 'Edite'], [/\bedit\b/g, 'editar'],
+    [/\bShare\b/g, 'Compartilhe'], [/\bshare\b/g, 'compartilhar'],
+    [/\bCollaborate\b/g, 'Colabore'], [/\bcollaborate\b/g, 'colaborar'],
+    [/\bConnect\b/g, 'Conecte'], [/\bconnect\b/g, 'conectar'],
+    [/\bSearch\b/g, 'Busque'], [/\bsearch\b/g, 'busca'],
+    [/\bFind\b/g, 'Encontre'], [/\bfind\b/g, 'encontrar'],
+    [/\bLearn\b/g, 'Aprenda'], [/\blearn\b/g, 'aprender'],
+    [/\band\b/g, 'e'], [/\bwith\b/g, 'com'], [/\bfor\b/g, 'para'],
+    [/\byour\b/g, 'seu'], [/\bYour\b/g, 'Seu'],
+    [/\bthe\b/g, 'o'], [/\bThe\b/g, 'O'],
+    [/\bfrom\b/g, 'de'], [/\bFrom\b/g, 'De'],
+    [/\binto\b/g, 'em'], [/\busing\b/g, 'usando'],
+    [/\bUsing\b/g, 'Usando'],
+    [/\bor\b/g, 'ou'], [/\balso\b/g, 'também'],
+    [/\bmore\b/g, 'mais'], [/\bMore\b/g, 'Mais'],
+    [/\bbest\b/g, 'melhor'], [/\bBest\b/g, 'Melhor'],
+    [/\bnew\b/g, 'novo'], [/\bNew\b/g, 'Novo'],
+    [/\bany\b/g, 'qualquer'], [/\bAny\b/g, 'Qualquer'],
+    [/\bevery\b/g, 'cada'], [/\bEvery\b/g, 'Cada'],
+    [/\ball\b/g, 'todos'], [/\bAll\b/g, 'Todos'],
+    [/\bmany\b/g, 'muitos'], [/\bseveral\b/g, 'vários'],
+    [/\bplatforms?\b/gi, 'plataforma'],
+    [/\btools?\b/gi, 'ferramenta'],
+    [/\bsolutions?\b/gi, 'soluções'],
+    [/\bfeatures?\b/gi, 'recursos'],
+    [/\bapplications?\b/gi, 'aplicações'],
+    [/\bwebsites?\b/gi, 'sites'],
+    [/\busers?\b/gi, 'usuários'],
+    [/\bbusinesses?\b/gi, 'negócios'],
+    [/\bteams?\b/gi, 'equipes'],
+    [/\bcustomers?\b/gi, 'clientes'],
+    [/\bimages?\b/gi, 'imagens'],
+    [/\bvideos?\b/gi, 'vídeos'],
+    [/\baudio\b/gi, 'áudio'],
+    [/\bmusic\b/gi, 'música'],
+    [/\bwriting\b/gi, 'escrita'],
+    [/\bproductivity\b/gi, 'produtividade'],
+    [/\bmarketing\b/gi, 'marketing'],
+    [/\bautomation\b/gi, 'automação'],
+    [/\bintegration\b/gi, 'integração'],
+    [/\bcollaboration\b/gi, 'colaboração'],
+    [/\bcommunication\b/gi, 'comunicação'],
+    [/\bpersonalization\b/gi, 'personalização'],
+    [/\bcustomization\b/gi, 'customização'],
+    [/\boptimization\b/gi, 'otimização'],
+    [/\bperformance\b/gi, 'desempenho'],
+    [/\befficiency\b/gi, 'eficiência'],
+    [/\bworkflows?\b/gi, 'fluxos de trabalho'],
+    [/\bcontent\b/gi, 'conteúdo'],
+    [/\bpowerful\b/gi, 'poderoso'],
+    [/\badvanced\b/gi, 'avançado'],
+    [/\bsmart\b/gi, 'inteligente'],
+    [/\bfast(er)?\b/gi, 'rápido'],
+    [/\beasy\b/gi, 'fácil'],
+    [/\bsimple\b/gi, 'simples'],
+    [/\bfree\b/gi, 'gratuito'],
+    [/\bbetter\b/gi, 'melhor'],
+    [/\bquality\b/gi, 'qualidade'],
+    [/\bhigh\b/gi, 'alta'],
+    [/\bHelps\b/g, 'Ajuda a'], [/\bhelps\b/g, 'ajuda a'],
+    [/\benables\b/g, 'possibilita'],
+    [/\bprovides\b/g, 'fornece'],
+    [/\boffers\b/g, 'oferece'],
+    [/\bcreates\b/g, 'cria'],
+    [/\bgenerates\b/g, 'gera'],
+    [/\bsupports\b/g, 'suporta'],
+    [/\bincludes\b/g, 'inclui'],
+    [/\bis a\b/g, 'é um(a)'],
+    [/\bAn AI\b/g, 'Uma IA'],
+    [/\ban AI\b/g, 'uma IA'],
+    [/\bAI\b/g, 'IA'],
+];
+
+const _ptCache = new Map();
+
+function translateToPT(text) {
+    if (!text || text.length < 5) return text;
+    // Skip if already has PT characters
+    if (/[àáâãéêíóôõúçÀÁÂÃÉÊÍÓÔÕÚÇ]/.test(text)) return text;
+    // Check cache
+    if (_ptCache.has(text)) return _ptCache.get(text);
+
+    let t = text;
+    // Apply phrase replacements first
+    for (const [en, pt] of _ptDict) {
+        t = t.split(en).join(pt);
+    }
+    // Apply word-level regex replacements
+    for (const [regex, pt] of _ptWords) {
+        t = t.replace(regex, pt);
+    }
+    // Cache result (limit cache size)
+    if (_ptCache.size > 5000) _ptCache.clear();
+    _ptCache.set(text, t);
+    return t;
+}
+
 function createCardHTML(tool) {
     // Icon Logic (Direct from tool data prioritized)
     let icon = '';
@@ -690,7 +944,7 @@ function createCardHTML(tool) {
                     </div>
                 </div>
                 <div class="tool-name">${escapeHtml(tool.name)}</div>
-                <div class="tool-desc">${escapeHtml(tool.description) || ''}</div>
+                <div class="tool-desc">${escapeHtml(translateToPT(tool.description)) || ''}</div>
             </div>
         </div>
     `;

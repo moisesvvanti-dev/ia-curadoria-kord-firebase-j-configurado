@@ -135,40 +135,65 @@ function showKordAlert(title, desc, icon, color) {
     const existing = document.getElementById('kordAlertToast');
     if (existing) existing.remove();
 
-    const toast = document.createElement('div');
-    toast.id = 'kordAlertToast';
-    toast.style.cssText = `position:fixed; top:30px; left:50%; transform:translateX(-50%) translateY(-20px); z-index:99999999; background:rgba(15,23,42,0.95); border:1px solid rgba(255,255,255,0.15); border-radius:16px; padding:18px 28px; display:flex; align-items:center; gap:16px; box-shadow:0 20px 50px rgba(0,0,0,0.7); backdrop-filter:blur(15px); max-width:500px; width:90%; opacity:0; transition: opacity 0.3s ease, transform 0.3s ease;`;
-
     const safeColor = color || '#6366f1';
     const rgbResult = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(safeColor);
     const rgb = rgbResult ? `${parseInt(rgbResult[1], 16)}, ${parseInt(rgbResult[2], 16)}, ${parseInt(rgbResult[3], 16)}` : '99, 102, 241';
 
+    // Inject styles once
+    if (!document.getElementById('kordAlertStyles')) {
+        const styleEl = document.createElement('style');
+        styleEl.id = 'kordAlertStyles';
+        styleEl.textContent = `
+            @keyframes kordToastIn { from { opacity:0; transform:translateX(-50%) translateY(-30px) scale(0.95); } to { opacity:1; transform:translateX(-50%) translateY(0) scale(1); } }
+            @keyframes kordToastOut { from { opacity:1; transform:translateX(-50%) translateY(0) scale(1); } to { opacity:0; transform:translateX(-50%) translateY(-20px) scale(0.95); } }
+            @keyframes kordToastProgress { from { width:100%; } to { width:0%; } }
+            @keyframes kordIconPulse { 0%,100% { transform:scale(1); } 50% { transform:scale(1.1); } }
+        `;
+        document.head.appendChild(styleEl);
+    }
+
+    const toast = document.createElement('div');
+    toast.id = 'kordAlertToast';
+    toast.style.cssText = `position:fixed;top:24px;left:50%;transform:translateX(-50%);z-index:99999999;
+        background:rgba(10,12,20,0.75);
+        background-image:linear-gradient(135deg,rgba(255,255,255,0.06) 0%,rgba(255,255,255,0) 50%,rgba(255,255,255,0.03) 100%);
+        backdrop-filter:blur(30px) saturate(160%);-webkit-backdrop-filter:blur(30px) saturate(160%);
+        border:1px solid rgba(255,255,255,0.1);border-radius:18px;
+        padding:0;display:flex;flex-direction:column;overflow:hidden;
+        box-shadow:0 20px 60px rgba(0,0,0,0.6),inset 0 1px 0 rgba(255,255,255,0.08),0 0 40px rgba(${rgb},0.1);
+        max-width:480px;width:92%;
+        animation:kordToastIn 0.4s cubic-bezier(0.34,1.56,0.64,1) forwards;`;
+
     toast.innerHTML = `
-        <div style="width:44px; height:44px; border-radius:12px; background:rgba(${rgb}, 0.15); display:flex; justify-content:center; align-items:center; flex-shrink:0;">
-            <span class="material-icons-round" style="font-size:24px; color:${safeColor};">${icon || 'info'}</span>
+        <div style="display:flex;align-items:center;gap:14px;padding:16px 20px 14px 0;">
+            <div style="width:5px;align-self:stretch;background:${safeColor};border-radius:0 4px 4px 0;box-shadow:0 0 12px rgba(${rgb},0.5);flex-shrink:0;"></div>
+            <div style="width:44px;height:44px;border-radius:14px;background:rgba(${rgb},0.12);border:1px solid rgba(${rgb},0.2);display:flex;justify-content:center;align-items:center;flex-shrink:0;animation:kordIconPulse 0.6s ease;">
+                <span class="material-icons-round" style="font-size:24px;color:${safeColor};">${icon || 'info'}</span>
+            </div>
+            <div style="flex:1;min-width:0;">
+                <div style="font-weight:700;color:#f0f0f5;font-size:0.95rem;margin-bottom:3px;letter-spacing:-0.01em;">${title}</div>
+                <div style="color:#94a3b8;font-size:0.83rem;line-height:1.5;word-wrap:break-word;">${desc}</div>
+            </div>
+            <div onclick="this.closest('#kordAlertToast').style.animation='kordToastOut 0.3s ease forwards';setTimeout(()=>{const t=document.getElementById('kordAlertToast');if(t)t.remove()},300)" 
+                 style="cursor:pointer;color:#475569;padding:6px;border-radius:8px;transition:all 0.2s;flex-shrink:0;display:flex;align-items:center;justify-content:center;"
+                 onmouseover="this.style.background='rgba(255,255,255,0.08)';this.style.color='#94a3b8'" onmouseout="this.style.background='none';this.style.color='#475569'">
+                <span class="material-icons-round" style="font-size:16px;">close</span>
+            </div>
         </div>
-        <div style="flex:1; min-width:0;">
-            <div style="font-weight:700; color:#f8fafc; font-size:0.95rem; margin-bottom:2px;">${title}</div>
-            <div style="color:#94a3b8; font-size:0.85rem; line-height:1.4; word-wrap:break-word;">${desc}</div>
-        </div>
-        <div onclick="this.parentElement.remove()" style="cursor:pointer; color:#64748b; padding:4px; border-radius:6px; transition: background 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.1)'" onmouseout="this.style.background='none'">
-            <span class="material-icons-round" style="font-size:18px;">close</span>
+        <div style="height:3px;background:rgba(255,255,255,0.03);margin:0 1px 1px 1px;border-radius:0 0 16px 16px;overflow:hidden;">
+            <div style="height:100%;background:linear-gradient(90deg,${safeColor},rgba(${rgb},0.3));border-radius:2px;animation:kordToastProgress 4.5s linear forwards;"></div>
         </div>
     `;
 
     document.body.appendChild(toast);
-    requestAnimationFrame(() => {
-        toast.style.opacity = '1';
-        toast.style.transform = 'translateX(-50%) translateY(0)';
-    });
 
     setTimeout(() => {
-        if (toast.parentElement) {
-            toast.style.opacity = '0';
-            toast.style.transform = 'translateX(-50%) translateY(-20px)';
-            setTimeout(() => toast.remove(), 300);
+        const t = document.getElementById('kordAlertToast');
+        if (t) {
+            t.style.animation = 'kordToastOut 0.35s ease forwards';
+            setTimeout(() => { if (t.parentElement) t.remove(); }, 350);
         }
-    }, 4000);
+    }, 4500);
 }
 
 // Global reply state
@@ -1119,11 +1144,17 @@ async function sendKordMessage(mediaData = null) {
 
     const isSuperAdmin = currentUser && currentUser.email === 'moisesvvanti@gmail.com';
 
-    if (!isSuperAdmin) {
-        const isHarmful = await checkSecurityMessageAI(msg);
-        if (isHarmful) {
-            return banUserKord();
-        }
+    if (!isSuperAdmin && !mediaData) {
+        const isGroup = currentKordChannel.startsWith('dm:');
+        const serverId = currentKordServer;
+        const channelId = currentKordChannel;
+
+        try {
+            const isHarmful = await checkSecurityMessageAI(msg, serverId, channelId, isGroup);
+            if (isHarmful) {
+                return; // The security engine handles the ban & freezing automatically
+            }
+        } catch (e) { console.error("Falha no modulo de segurança", e); }
     }
 
     const authorName = currentUser ? (currentUser.displayName || currentUser.email.split('@')[0]) : "Convite";
@@ -1151,9 +1182,17 @@ async function sendKordMessage(mediaData = null) {
     }
 
     if (mediaData) {
-        msgPayload.mediaType = mediaData.type;
-        msgPayload.mediaUrl = mediaData.url;
-        msgPayload.fileName = mediaData.name || null;
+        if (mediaData.type === 'p2p_file') {
+            msgPayload.mediaType = 'p2p_file';
+            msgPayload.magnetURI = mediaData.magnetURI;
+            msgPayload.p2pFileName = mediaData.name;
+            msgPayload.p2pFileSize = mediaData.size;
+            msgPayload.expiresAt = mediaData.expiresAt || 0;
+        } else {
+            msgPayload.mediaType = mediaData.type;
+            msgPayload.mediaUrl = mediaData.url;
+            msgPayload.fileName = mediaData.name || null;
+        }
     }
 
     // PRIMARY ROUTING BY currentKordChannel
@@ -1169,6 +1208,11 @@ async function sendKordMessage(mediaData = null) {
     }
 
     input.value = '';
+
+    // Clear typing indicator
+    if (typeof KordRT !== 'undefined') {
+        KordRT.clearTyping();
+    }
 
     // Close any pickers
     closeAllKordPickers();
@@ -1312,17 +1356,61 @@ function kordAttachChatListener(ref, container, type = 'chat') {
 
     if (container) container.innerHTML = '';
 
+    // Real-time: new messages
     query.on('child_added', childSnap => {
         if (container.querySelector(`[data-msg-id="${childSnap.key}"]`)) return;
         kordRenderMessage(childSnap.val(), childSnap.key, container, type);
     });
 
-    query.on('child_removed', childSnap => {
-        const msgEl = container.querySelector(`[data-msg-id="${childSnap.key}"]`);
-        if (msgEl) {
-            msgEl.remove();
+    // Real-time: message edits (child_changed)
+    query.on('child_changed', childSnap => {
+        const existing = container.querySelector(`[data-msg-id="${childSnap.key}"]`);
+        if (existing) {
+            const data = childSnap.val();
+            const textEl = existing.querySelector('.kord-msg-text');
+            if (textEl && data.text) {
+                textEl.textContent = data.text;
+                // Add edit indicator
+                if (!existing.querySelector('.kord-edited-badge')) {
+                    const badge = document.createElement('span');
+                    badge.className = 'kord-edited-badge';
+                    badge.style.cssText = 'color:#64748b;font-size:0.7rem;font-style:italic;margin-left:6px;';
+                    badge.textContent = '(editado)';
+                    textEl.after(badge);
+                }
+            }
+            // Flash effect
+            existing.style.transition = 'background 0.3s';
+            existing.style.background = 'rgba(99,102,241,0.08)';
+            setTimeout(() => existing.style.background = '', 800);
         }
     });
+
+    // Real-time: message deletes (child_removed)
+    query.on('child_removed', childSnap => {
+        const existing = container.querySelector(`[data-msg-id="${childSnap.key}"]`);
+        if (existing) {
+            existing.style.transition = 'opacity 0.3s, transform 0.3s, max-height 0.3s';
+            existing.style.opacity = '0';
+            existing.style.transform = 'translateX(-20px)';
+            existing.style.maxHeight = '0';
+            existing.style.overflow = 'hidden';
+            setTimeout(() => existing.remove(), 350);
+        }
+    });
+
+    // Typing indicators
+    if (typeof KordRT !== 'undefined' && currentKordChannel) {
+        let typingRefPath = '';
+        if (currentKordChannel.startsWith('dm:')) {
+            typingRefPath = 'direct_messages/' + currentKordChannel.replace('dm:', '') + '/messages';
+        } else if (currentKordServer !== 'home' && currentKordChannel) {
+            typingRefPath = 'servers/' + currentKordServer + '/channels/' + currentKordChannel + '/messages';
+        }
+        if (typingRefPath) {
+            KordRT.watchTyping(typingRefPath, '#kord-input-area');
+        }
+    }
 }
 
 function loadForums() {
@@ -1640,16 +1728,21 @@ function showKordContextMenu(e, msgId, authorId, authorName, authorColor) {
     e.preventDefault();
     e.stopPropagation(); // Stop from reaching global security listener
 
+    window.currentContextMsgId = msgId;
+    window.currentContextAuthorId = authorId;
+    window.currentContextAuthorName = authorName || 'Usuário';
+    window.currentContextAuthorColor = authorColor || '#6366f1';
+
+    // Backwards compatibility for existing local lets
     currentContextMsgId = msgId;
-    currentContextAuthorId = authorId;
     currentContextAuthorName = authorName || 'Usuário';
-    currentContextAuthorColor = authorColor || '#6366f1';
 
     // Capture message text for copy/TTS - be more aggressive finding it
     const msgBlock = e.currentTarget; // The element with oncontextmenu
     if (msgBlock) {
         const textDiv = msgBlock.querySelector('div[style*="line-height:1.5"]') || msgBlock;
-        currentContextMsgText = textDiv.innerText.replace(/\n\n/g, '\n').trim();
+        window.currentContextMsgText = textDiv.innerText.replace(/\n\n/g, '\n').trim();
+        currentContextMsgText = window.currentContextMsgText;
     }
 
     const menu = document.getElementById('kordContextMenu');
@@ -1813,6 +1906,13 @@ function contextAction(action, extra = null) {
         navigator.clipboard.writeText(fwdText).then(() => {
             showKordAlert("Pronto para Encaminhar", "Texto marcado, agora é só colar (Ctrl+V) onde quiser enviar.", "shortcut", "#6366f1");
         });
+    } else if (action === 'report') {
+        document.getElementById('kordContextMenu').style.display = 'none';
+        if (typeof reportKordMessage === 'function') {
+            reportKordMessage();
+        } else {
+            showKordAlert('Denúncia Enviada', 'Sua denúncia foi registrada e será revisada pelo administrador.', 'flag', '#10b981');
+        }
     } else if (action === 'notify-all') {
         // Send a global notification to all users about this message
         showKordConfirm("Comunicado Global", "Isto irá disparar uma notificação pop-up para absolutamente TODOS os usuários. Prosseguir?", () => {

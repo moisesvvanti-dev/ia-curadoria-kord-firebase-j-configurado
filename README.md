@@ -1,53 +1,64 @@
-# 🌌 Luminous & Kord — Live Testing Environment
+# 🌌 Project Luminous & Kord V2.0
 
-![Banner](https://img.shields.io/badge/Status-Beta_Testing-success?style=for-the-badge&logo=firebase) ![Version](https://img.shields.io/badge/Version-v9.0_Live-blue?style=for-the-badge) ![Tech](https://img.shields.io/badge/Stack-JS_|_Firebase_|_WebRTC-orange?style=for-the-badge&logo=javascript)
-
-Bem-vindo ao repositório de testes do **Luminous & Kord**! 
-
-Antes de colocarmos a mão na massa para alterar o código, **precisamos da sua ajuda para quebrar o sistema.** O objetivo desta versão ao vivo é encontrar bugs na prática de uso diário, registrar falhas de UI e estressar as defesas da aplicação.
-
-🔗 **Acesse o ambiente de testes aqui:** [https://kordtesters.netlify.app/](https://kordtesters.netlify.app/)
+Project Luminous é um ecossistema completo focado em **cibersegurança, automação, comunicação P2P e moderação assistida por Inteligência Artificial**. Projetado a partir do zero utilizando princípios modernos de *Liquid Glass* e arquitetura em tempo real via Firebase, Luminous conecta ferramentas hardcore de segurança com um cliente web ultrasseguro (Kord).
 
 ---
 
-## 🎯 Objetivo dos Testadores (Bug Hunting)
+## 🚀 O que o Luminous oferece? (Core Features)
 
-Sua missão inicial é acessar a URL acima simulando um usuário comum ou mal-intencionado e testar exaustivamente os módulos abaixo. Reporte qualquer comportamento estranho, lentidão ou tela travada relatando o fluxo que você executou. Depois que mapearmos os problemas, nós consertaremos no código fonte!
+O painel centralizador (Luminous) entrega acesso a ferramentas agressivas e sistemas de automação criados para pentesters e pesquisadores de segurança.
 
-### 🧪 Área 1: Luminous Engine (Curadoria de IAs)
-O Luminous é o catálogo inicial da aplicação. Tente:
-1.  **Pesquisar rapidamente e apagar letras:** O sistema (Debounce) consegue acompanhar sua digitação ou ele trava?
-2.  **Clicar em Várias IAs:** Navegue pelos cards, clique em "Apoiar Projeto", "Changelog" e verifique as transições (Glassmorphism).
-3.  **Salvar Favoritos:** Favorite IAs, vá na aba "Salvos" e atualize a página. Eles continuam lá?
-4.  **Temas e Eco-Mode:** Brinque com o Dark/Light theme e com o Eco-Mode (desligar animações). Alguma página quebrou as cores?
-
-### 💬 Área 2: Kord Meet (Comunicação)
-Acesse a aba `Kord (Meet)` na lateral. Crie uma conta no sistema (leva 10 segundos) e tente quebrar o chat:
-1.  **Interações de Mensagem:** Clique com botão direito (ou segure no celular) em qualquer mensagem. Teste as opções: Fixar, Copiar ID, Responder. 
-2.  **O Teste do Link:** Copie o **"Link Direto"** de uma mensagem. Abra uma aba anônima ou envie pra um amigo. Ao clicar, o sistema deve ignorar o carregamento normal, voar direto pro Servidor correto e rolar a página magicamente até a mensagem exata com uma animação roxa. Funciona se você não estiver logado?
-3.  **Avatar & Cores:** Altere seu nickname e as cores da sua foto (no Ícone da Engrenagem). As pessoas no chat veem essa mudança em tempo real?
-4.  **Tradução On-Device (Groq API):** Tente mandar enviar comandos pro Translator (bot de IA local) ou ouvir uma mensagem de texto ser traduzida e falada via TTS (Áudio Artificial). Algum delay ou alucinação?
-
-### 🔒 Área 3: Luminous Shield (Tentativa de Hacker)
-O Kord odeia ser espionado. Desafiamos você a tentar roubar o código:
-1.  **Clique Direito:** Tente inspecionar elemento.
-2.  **Teclado:** F12, Ctrl+Shift+I, Ctrl+Shift+C.  
-3.  **Navegador:** Se você arranjar um jeito de abrir a aba de Desenvolvedor (DevTools) pelos menus próprios do seu Chrome ou Safari, o **Debugger Trap** deve reagir em menos de 1 segundo cobrindo sua tela com uma Mensagem de Bloqueio Vermelha gigante e inativando a aba inteira. Conseguiu burlar?
-
-### 💳 Área 4: Transações P2P Inline
-Encontre um contato no DM que tenha configurado e-mail do PayPal (no perfil dele).
-1. Clique em **Enviar via PayPal**. 
-2. Escolha o valor e clique "Avançar".
-3. **Ponto Crítico:** Ao invés de ser arremessado pra fora do site, um iFrame dinâmico e seguro com botões nativos do PayPal (amarelo e preto) devem abrir **ali mesmo no nosso design**, fluindo e voltando sutilmente (Fluxo Inline puro, Smart Buttons). Falhou? Deu erro carregando o frame?
+*   **🧪 Script Lab (Gerador IA)**: Uma suíte de geração de scripts de invasão, payload e automação impulsionada por IA (Llama 3.3 70B via Groq). Contém técnicas avançadas de *jailbreak/bypass* para garantir entregas de scripts agressivos.
+*   **🕷️ SQLMap Automation**: Interface gráfica avançada para o motor SQLMap. Permite configurar flags `--dbs`, `--tables`, `--columns` e `--dump` com proxies e WAF bypass direto do painel.
+*   **💳 PagueMax Checker**: Motor assíncrono multi-thread em Python para verificação em massa de cartões de crédito/débito contra gateways como o PayPal, com integração de proxies residenciais.
+*   **🪞 Localhost Mirror Proxy**: Uma ferramenta customizada para clonar sites e levantar um mirror rodando localmente (localhost), fazendo bypass de CORS e permitindo testes de infiltração sem alarmar wafs do escopo real.
+*   **💰 Sistema de Doação (PayPal IPN)**: Um painel de suporte automatizado via PayPal API, garantindo o selo de "Apoiador Verificado", tracking de receita e liberação instantânea de benefícios V.I.P para usuários cadastrados.
+*   **🛡️ Autenticação Unificada Firebase**: Sistema robusto de Login / Registro / Recuperação de Senha com persistência de sessões, perfis globais e geração automática de Nicks únicos.
+*   **📊 Luminous Admin Dashboard**: Painel de administração *Real-Time*, restrito via servidor, contendo: estatísticas dinâmicas, gerenciamento de Doadores, visualizador de acesso a logs, histórico de bugs, ranking de pesquisas no sistema e gerador de Notificações Globais via Push.
 
 ---
 
-## 🛠 Para Visualizar os Erros (Antes de começar a arrumar o Código)
+## 🔮 Kord (Premium Chat & Voice Client)
 
-Se você encontrar um problema nas rotinas acima no link [kordtesters](https://kordtesters.netlify.app/):
+O **Kord** é a evolução do bate-papo: um cliente WebRTC + Firebase integrado ao Luminous. Focado em privacidade, velocidade e customização gráfica profunda.
 
-1. Vá na navegação Mobile ou Desktop do Luminous e clique no botão **Bug (Amarelo)**.
-2. Preencha e dispare lá mesmo (nosso log do Firebase guardará os dados).
-3. Se for um problema técnico para discussões aqui no GitHub ou com a IA, liste os *Issues* claramente documentando qual módulo explodiu!
+### 🎭 Personalização Estrema (Theme Engine)
+*   **Seletor de Cores Dinâmico**: O Kord adapta a inteface, os botões, os brilhos neon (glow) e as sombras das caixas baseado unicamente na cor Hex escolhida pelo usuário.
+*   **Liquid Glass Design**: O aplicativo foi estruturado com CSS Backdrop-filters e gradients radiais, entregando uma interface hiper realista de vidro líquido e bordas suaves.
+*   **Efeitos Visuais Interativos (FX Layer)**: Um motor de partículas renderiza animações globais impressionantes por toda a plataforma usando CSS Puro + JS Injection. Contém efeitos exóticos como:
+    *   🔥 **Fogo**: Partículas escaláveis na base do aplicativo.
+    *   💨 **Fumaça**: Névoa suave fluindo verticalmente.
+    *   ❄️ **Gelo**: Cristalização progressiva das bordas.
+    *   ⚡ **Neon**: Pulsação cyberpunk de alta voltagem.
+    *   🌊 **Aurora**: Ondulações de luzes boreais no fundo.
+    *   🌌 **Matrix**: Cascata digital de dados descendentes.
+    *   🔮 **Partículas / ✨ Brilho**: Elementos flutuantes interativos brilhantes.
 
-Após a fase de quebra, nós viremos arrumar o comportamento do repositório! Boas caçadas. 🛡️
+### 💬 Comunicação e Conectividade
+*   **Servidores e Canais**: Comunidades (Servidores) com divisão por Categorias e Canais focados em texto ou voz.
+*   **Chat Direto (DM) e Grupos**: Chat P2P instantâneo com suporte a grupos dinâmicos, criação de convites (`/invite`) e gerenciamento de membros.
+*   **WebRTC Voz e Vídeo**: Chamadas de áudio e vídeo em grupo ou privadas habilitando P2P real e latência próxima a zero. Controles avançados de silenciador de microfone, ensurdecimento e compartilhamento seguro da tela.
+*   **Compartilhamento de Arquivos via WebTorrent (P2P)**: O Kord permite compartilhamento de mídia sem consumo de banda do servidor central. Os arquivos são pulverizados via protocolo WebTorrent Magnético com expiração automática e streaming direto pela memória do navegador.
+
+### 🧠 Integração Nativa de I.A (Groq Api)
+*   **Tradutor Interativo em Tempo Real**: Uma IA residente escuta as mensagens e pode lê-las em voz alta usando SpeechSynthesis API nativo.
+*   **Tradutor Universal (Google Translate)**: Interface conectada à engine do Google para conversão em tempo real do idioma global da aplicação, permitindo a usuários do mundo todo explorarem o site sem barreiras.
+*   **Geração Inteligente de Respostas e Designers**: Módulos AI auxiliam diretamente no uso de comandos diários dentro das caixas de mensagem.
+
+### 🚔 Kord Security & Moderation Engine
+A segurança do Kord não aceita falhas. Um módulo de proteção ultra restritivo defende a comunidade em tempo real.
+
+*   **Fingerprint Anti-Fraude (HWID)**: O Kord assina criptograficamente o hardware do usuário (User Agent, Concurrency, Hardware Mem, Canvas, Langs) e gera um Serial ID fixo pseudo-anônimo que impede a criação de contas fakes se a máquina original for banida.
+*   **AI Anti-Porn/Pedophilia/Nazism (Zero Tolerância)**: O ato de apertar `[ENTER]` dispara um *hook* direto na Llama-3 70B (Groq) avaliando a toxicidade extrema (Nazismo, Pedofilia, Pornografia). Ao detectar a violação, o sistema bane o **HWID** e o **IP** permanentemente em milissegundos, antes mesmo de salvar no banco de dados, além de deletar **grupos, DMs ou Servidores inteiros** automaticamente.
+*   **Admin Reports e Banimento de Falsos Relatos**: Mensagens comuns podem ser denunciadas anonimamente via botão direito (Context Menu). Se o Admin, analisando a queixa, notar malícia por parte do denunciante (falso report / trolagem), um **Sistema de Punição Expressa** dentro do painel do Admin permite suspensões de 10 Dias automáticas a quem relatou, ou ao infrator original. O acúmulo de 3 suspensões temporárias converte-se automaticamente em **Banimento Permanente de Hardware**.
+
+---
+
+## 🛠️ Stack Tecnológica
+*   **Frontend**: HTML5 Semântico, Vanilla JavaScript Módular. CSS3 Avançado (Flex/Grid, Animations, Backdrop Filters, Glassmorphism).
+*   **Backend / DB**: Google Firebase Realtime Database & Firebase Auth.
+*   **APIs**: PayPal API (PagueMax / Donate), Groq API (LLaMA 3.3 Versatile), WebTorrent, WebRTC (PeerJS).
+*   **Hospedagem**: Arquitetura Híbrida Web/Localhost.
+
+---
+*Luminous / Kord v2.0 - Desenvolvido para estabilidade, agressividade estética e impenetrável segurança.*

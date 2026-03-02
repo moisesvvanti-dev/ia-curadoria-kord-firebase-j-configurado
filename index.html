@@ -99,6 +99,12 @@
                 <a href="#" class="nav-item" onclick="switchView('kord'); return false;"
                     style="color: #6366f1; font-weight: 600;"><span
                         class="material-icons-round nav-icon">voice_chat</span> Kord (Meet)</a>
+                <a href="#" class="nav-item" onclick="switchView('wallet'); return false;"
+                    style="color: #f59e0b; font-weight: 600;"><span
+                        class="material-icons-round nav-icon">account_balance_wallet</span> Wallet</a>
+                <a href="#" id="admin-nav-desktop" class="nav-item" onclick="switchView('admin'); return false;"
+                    style="display:none; color: #ef4444; font-weight: 600;"><span
+                        class="material-icons-round nav-icon">admin_panel_settings</span> Admin</a>
                 <div style="flex:1"></div>
                 <a href="#" class="nav-item" onclick="openBugReport(); return false;" style="color: #f59e0b;"><span
                         class="material-icons-round nav-icon">bug_report</span> Reportar Bug</a>
@@ -143,13 +149,318 @@
                         <button class="cat-chip" onclick="filterByCategory('Audio')">🎵 Áudio</button>
                         <button class="cat-chip" onclick="filterByCategory('Dev')">💻 Código</button>
                         <button class="cat-chip" onclick="filterByCategory('Marketing')">📈 Marketing</button>
-                        <button class="cat-chip" onclick="filterByCategory('Tech Geral')">🌐 Deep Web</button>
+                        <button class="cat-chip" onclick="filterByCategory('Tech Geral')">🌐 Tech / Deep Web</button>
                         <button class="cat-chip" onclick="filterByCategory('Medicina')">⚕️ Medicina</button>
                         <button class="cat-chip" onclick="filterByCategory('Direito')">⚖️ Direito</button>
+                        <button class="cat-chip" onclick="filterByCategory('Educacao')">📚 Educação</button>
+                        <button class="cat-chip" onclick="filterByCategory('Financas')">💰 Finanças</button>
                     </div>
 
                     <div id="aiGrid" class="masonry-grid">
                         <!-- CONTENT INJECTED VIA JS -->
+                    </div>
+                </div>
+
+                <!-- VIEW: ADMIN (Hidden for non-admin users) -->
+                <div id="view-admin" style="display:none; padding:20px;">
+                    <div style="display:flex; align-items:center; gap:12px; margin-bottom:24px;">
+                        <div
+                            style="width:48px; height:48px; background:linear-gradient(135deg, #ef4444, #dc2626); border-radius:14px; display:flex; align-items:center; justify-content:center;">
+                            <span class="material-icons-round"
+                                style="color:#fff; font-size:28px;">admin_panel_settings</span>
+                        </div>
+                        <div>
+                            <h1 style="margin:0; font-size:1.6rem; color:#f8fafc;">LUMINOUS CONTROL CENTER</h1>
+                            <p style="margin:0; color:#64748b; font-size:0.85rem;">Admin exclusivo —
+                                moisesvvanti@gmail.com</p>
+                        </div>
+                    </div>
+
+                    <!-- ADMIN STATS ROW -->
+                    <div
+                        style="display:grid; grid-template-columns:repeat(auto-fit, minmax(150px, 1fr)); gap:12px; margin-bottom:24px;">
+                        <div
+                            style="background:rgba(16,185,129,0.08); border:1px solid rgba(16,185,129,0.2); border-radius:16px; padding:18px; text-align:center;">
+                            <div id="admin-stat-revenue" style="font-size:1.5rem; font-weight:800; color:#10b981;">R$
+                                0.00</div>
+                            <div
+                                style="color:#64748b; font-size:11px; text-transform:uppercase; letter-spacing:1px; margin-top:4px;">
+                                Receita</div>
+                        </div>
+                        <div
+                            style="background:rgba(251,191,36,0.08); border:1px solid rgba(251,191,36,0.2); border-radius:16px; padding:18px; text-align:center;">
+                            <div id="admin-stat-supporters" style="font-size:1.5rem; font-weight:800; color:#fbbf24;">0
+                            </div>
+                            <div
+                                style="color:#64748b; font-size:11px; text-transform:uppercase; letter-spacing:1px; margin-top:4px;">
+                                Apoiadores</div>
+                        </div>
+                        <div
+                            style="background:rgba(99,102,241,0.08); border:1px solid rgba(99,102,241,0.2); border-radius:16px; padding:18px; text-align:center;">
+                            <div id="admin-stat-updates" style="font-size:1.5rem; font-weight:800; color:#6366f1;">0
+                            </div>
+                            <div
+                                style="color:#64748b; font-size:11px; text-transform:uppercase; letter-spacing:1px; margin-top:4px;">
+                                Atualizações</div>
+                        </div>
+                        <div
+                            style="background:rgba(34,211,238,0.08); border:1px solid rgba(34,211,238,0.2); border-radius:16px; padding:18px; text-align:center;">
+                            <div id="admin-stat-version" style="font-size:1.5rem; font-weight:800; color:#22d3ee;">1.0.0
+                            </div>
+                            <div
+                                style="color:#64748b; font-size:11px; text-transform:uppercase; letter-spacing:1px; margin-top:4px;">
+                                Versão</div>
+                        </div>
+                        <div
+                            style="background:rgba(16,185,129,0.08); border:1px solid rgba(16,185,129,0.2); border-radius:16px; padding:18px; text-align:center;">
+                            <div id="admin-stat-online" style="font-size:1.5rem; font-weight:800; color:#10b981;">0
+                            </div>
+                            <div
+                                style="color:#64748b; font-size:11px; text-transform:uppercase; letter-spacing:1px; margin-top:4px;">
+                                Online Agora</div>
+                        </div>
+                    </div>
+
+                    <!-- ADMIN TABS -->
+                    <div
+                        style="display:flex; flex-wrap:wrap; gap:6px; margin-bottom:20px; overflow-x:auto; padding-bottom:6px;">
+                        <button class="admin-tab-btn active" data-tab="changelog" onclick="switchAdminTab('changelog')"
+                            style="background:rgba(99,102,241,0.15); color:#a78bfa; border:1px solid rgba(99,102,241,0.3); padding:8px 16px; border-radius:10px; cursor:pointer; font-weight:600; font-size:13px; white-space:nowrap;">📝
+                            Changelog</button>
+                        <button class="admin-tab-btn" data-tab="supporters" onclick="switchAdminTab('supporters')"
+                            style="background:rgba(255,255,255,0.04); color:#94a3b8; border:1px solid rgba(255,255,255,0.08); padding:8px 16px; border-radius:10px; cursor:pointer; font-weight:600; font-size:13px; white-space:nowrap;">🏆
+                            Apoiadores</button>
+                        <button class="admin-tab-btn" data-tab="notifications" onclick="switchAdminTab('notifications')"
+                            style="background:rgba(255,255,255,0.04); color:#94a3b8; border:1px solid rgba(255,255,255,0.08); padding:8px 16px; border-radius:10px; cursor:pointer; font-weight:600; font-size:13px; white-space:nowrap;">⚡
+                            Notificações</button>
+                        <button class="admin-tab-btn" data-tab="logs" onclick="switchAdminTab('logs')"
+                            style="background:rgba(255,255,255,0.04); color:#94a3b8; border:1px solid rgba(255,255,255,0.08); padding:8px 16px; border-radius:10px; cursor:pointer; font-weight:600; font-size:13px; white-space:nowrap;">📡
+                            Logs</button>
+                        <button class="admin-tab-btn" data-tab="curator" onclick="switchAdminTab('curator')"
+                            style="background:rgba(255,255,255,0.04); color:#94a3b8; border:1px solid rgba(255,255,255,0.08); padding:8px 16px; border-radius:10px; cursor:pointer; font-weight:600; font-size:13px; white-space:nowrap;">🤖
+                            Auto-Curator</button>
+                        <button class="admin-tab-btn" data-tab="bugs" onclick="switchAdminTab('bugs')"
+                            style="background:rgba(255,255,255,0.04); color:#94a3b8; border:1px solid rgba(255,255,255,0.08); padding:8px 16px; border-radius:10px; cursor:pointer; font-weight:600; font-size:13px; white-space:nowrap;">🐛
+                            Bugs</button>
+                        <button class="admin-tab-btn" data-tab="reports" onclick="switchAdminTab('reports')"
+                            style="background:rgba(255,255,255,0.04); color:#94a3b8; border:1px solid rgba(255,255,255,0.08); padding:8px 16px; border-radius:10px; cursor:pointer; font-weight:600; font-size:13px; white-space:nowrap;">🚩
+                            Reports (<span id="admin-reports-count">0</span>)</button>
+                        <button class="admin-tab-btn" data-tab="danger" onclick="switchAdminTab('danger')"
+                            style="background:rgba(239,68,68,0.08); color:#ef4444; border:1px solid rgba(239,68,68,0.2); padding:8px 16px; border-radius:10px; cursor:pointer; font-weight:600; font-size:13px; white-space:nowrap;">⚠️
+                            Perigo</button>
+                    </div>
+
+                    <!-- TAB: CHANGELOG -->
+                    <div id="admin-tab-changelog" class="admin-tab-content" style="display:block;">
+                        <div style="display:grid; grid-template-columns:320px 1fr; gap:16px;">
+                            <div
+                                style="background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.06); border-radius:16px; padding:20px;">
+                                <h3 style="color:#f8fafc; margin:0 0 12px 0;">✏️ Nova Atualização</h3>
+                                <input id="admin-cl-title" placeholder="Título..."
+                                    style="width:100%; background:rgba(0,0,0,0.3); border:1px solid rgba(255,255,255,0.1); border-radius:10px; padding:10px; color:#fff; margin-bottom:8px; box-sizing:border-box;">
+                                <select id="admin-cl-type"
+                                    style="width:100%; background:rgba(0,0,0,0.3); border:1px solid rgba(255,255,255,0.1); border-radius:10px; padding:10px; color:#fff; margin-bottom:8px;">
+                                    <option value="feature">🚀 Feature</option>
+                                    <option value="fix">🔧 Bug Fix</option>
+                                    <option value="security">🛡️ Security</option>
+                                    <option value="performance">⚡ Speed</option>
+                                    <option value="ui">🎨 UI/UX</option>
+                                    <option value="database">💾 Database</option>
+                                </select>
+                                <input id="admin-cl-version" placeholder="Versão (ex: 2.4.0)" value="2.4.0"
+                                    style="width:100%; background:rgba(0,0,0,0.3); border:1px solid rgba(255,255,255,0.1); border-radius:10px; padding:10px; color:#fff; margin-bottom:8px; box-sizing:border-box;">
+                                <textarea id="admin-cl-desc" placeholder="Descrição detalhada..." rows="4"
+                                    style="width:100%; background:rgba(0,0,0,0.3); border:1px solid rgba(255,255,255,0.1); border-radius:10px; padding:10px; color:#fff; margin-bottom:12px; resize:vertical; box-sizing:border-box;"></textarea>
+                                <button onclick="adminAddChangelog()"
+                                    style="width:100%; background:linear-gradient(135deg, #6366f1, #4338ca); color:#fff; border:none; padding:12px; border-radius:10px; cursor:pointer; font-weight:700;">🚀
+                                    PUBLICAR</button>
+                            </div>
+                            <div
+                                style="background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.06); border-radius:16px; padding:20px; overflow:auto;">
+                                <div
+                                    style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+                                    <h3 style="color:#f8fafc; margin:0;">📋 Atualizações</h3>
+                                    <button onclick="adminClearAllChangelog()"
+                                        style="background:rgba(239,68,68,0.15); color:#ef4444; border:1px solid rgba(239,68,68,0.3); padding:6px 12px; border-radius:8px; cursor:pointer; font-size:12px;">🗑️
+                                        Limpar Tudo</button>
+                                </div>
+                                <table style="width:100%; border-collapse:collapse;">
+                                    <thead>
+                                        <tr style="border-bottom:1px solid rgba(255,255,255,0.06);">
+                                            <th style="text-align:left; padding:8px; color:#64748b; font-size:11px;">
+                                                DATA</th>
+                                            <th style="text-align:left; padding:8px; color:#64748b; font-size:11px;">
+                                                TIPO</th>
+                                            <th style="text-align:left; padding:8px; color:#64748b; font-size:11px;">VER
+                                            </th>
+                                            <th style="text-align:left; padding:8px; color:#64748b; font-size:11px;">
+                                                TÍTULO</th>
+                                            <th style="padding:8px;"></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="admin-changelog-body"></tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- TAB: SUPPORTERS -->
+                    <div id="admin-tab-supporters" class="admin-tab-content" style="display:none;">
+                        <div
+                            style="background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.06); border-radius:16px; padding:20px;">
+                            <h3 style="color:#f8fafc; margin:0 0 12px 0;">🏆 Ranking de Apoiadores</h3>
+                            <table style="width:100%; border-collapse:collapse;">
+                                <thead>
+                                    <tr style="border-bottom:1px solid rgba(255,255,255,0.06);">
+                                        <th style="text-align:left; padding:8px; color:#64748b; font-size:11px;">#</th>
+                                        <th style="text-align:left; padding:8px; color:#64748b; font-size:11px;">NOME
+                                        </th>
+                                        <th style="text-align:left; padding:8px; color:#64748b; font-size:11px;">VALOR
+                                        </th>
+                                        <th style="text-align:left; padding:8px; color:#64748b; font-size:11px;">TIER
+                                        </th>
+                                        <th style="text-align:left; padding:8px; color:#64748b; font-size:11px;">DOAÇÕES
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody id="admin-supporters-body"></tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- TAB: NOTIFICATIONS -->
+                    <div id="admin-tab-notifications" class="admin-tab-content" style="display:none;">
+                        <div
+                            style="background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.06); border-radius:16px; padding:20px; max-width:600px;">
+                            <h3 style="color:#f8fafc; margin:0 0 4px 0;">📣 Notificação Global</h3>
+                            <p style="color:#64748b; margin:0 0 16px 0; font-size:0.85rem;">Envia alerta em tempo real
+                                para todos os usuários online.</p>
+                            <textarea id="admin-push-msg" placeholder="Ex: Nova IA adicionada! Confira na aba Explorar."
+                                rows="3"
+                                style="width:100%; background:rgba(0,0,0,0.3); border:1px solid rgba(255,255,255,0.1); border-radius:10px; padding:12px; color:#fff; margin-bottom:12px; resize:vertical; box-sizing:border-box;"></textarea>
+                            <button onclick="adminPushNotification()"
+                                style="width:100%; background:linear-gradient(135deg, #6366f1, #4338ca); color:#fff; border:none; padding:14px; border-radius:10px; cursor:pointer; font-weight:700; font-size:15px;">⚡
+                                ENVIAR ALERTA GLOBAL</button>
+                        </div>
+                    </div>
+
+                    <!-- TAB: ACCESS LOGS -->
+                    <div id="admin-tab-logs" class="admin-tab-content" style="display:none;">
+                        <div
+                            style="background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.06); border-radius:16px; padding:20px;">
+                            <div
+                                style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+                                <h3 style="color:#f8fafc; margin:0;">📡 Logs de Acesso</h3>
+                                <button onclick="adminClearAccessLogs()"
+                                    style="background:rgba(239,68,68,0.15); color:#ef4444; border:1px solid rgba(239,68,68,0.3); padding:6px 12px; border-radius:8px; cursor:pointer; font-size:12px;">🗑️
+                                    Limpar</button>
+                            </div>
+                            <table style="width:100%; border-collapse:collapse;">
+                                <thead>
+                                    <tr style="border-bottom:1px solid rgba(255,255,255,0.06);">
+                                        <th style="text-align:left; padding:8px; color:#64748b; font-size:11px;">HORA
+                                        </th>
+                                        <th style="text-align:left; padding:8px; color:#64748b; font-size:11px;">
+                                            DISPOSITIVO</th>
+                                        <th style="text-align:left; padding:8px; color:#64748b; font-size:11px;">TELA
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody id="admin-access-body"></tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- TAB: AUTO-CURATOR -->
+                    <div id="admin-tab-curator" class="admin-tab-content" style="display:none;">
+                        <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px;">
+                            <div
+                                style="background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.06); border-radius:16px; padding:20px;">
+                                <h3 style="color:#f8fafc; margin:0 0 8px 0;">🔥 Mais Buscados (Ranking)</h3>
+                                <div id="admin-search-ranking" style="max-height:300px; overflow-y:auto;"></div>
+                                <button onclick="adminClearSearchActivity()"
+                                    style="width:100%; margin-top:12px; background:rgba(239,68,68,0.15); color:#ef4444; border:1px solid rgba(239,68,68,0.3); padding:8px; border-radius:8px; cursor:pointer;">🗑️
+                                    Limpar Atividade</button>
+                            </div>
+                            <div
+                                style="background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.06); border-radius:16px; padding:20px;">
+                                <h3 style="color:#f8fafc; margin:0 0 8px 0;">🔍 Atividade (Live)</h3>
+                                <div id="admin-search-activity" style="max-height:300px; overflow-y:auto;"></div>
+                            </div>
+                        </div>
+                        <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-top:16px;">
+                            <div
+                                style="background:rgba(168,85,247,0.05); border:1px solid rgba(168,85,247,0.2); border-radius:16px; padding:20px;">
+                                <h3 style="color:#c084fc; margin:0 0 8px 0;">📋 Fila de Espera</h3>
+                                <div id="admin-discovery-queue" style="max-height:250px; overflow-y:auto;"></div>
+                            </div>
+                            <div
+                                style="background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.06); border-radius:16px; padding:20px;">
+                                <h3 style="color:#f8fafc; margin:0 0 8px 0;">📜 Histórico</h3>
+                                <div id="admin-discovery-history" style="max-height:250px; overflow-y:auto;"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- TAB: BUG REPORTS -->
+                    <div id="admin-tab-bugs" class="admin-tab-content" style="display:none;">
+                        <div
+                            style="background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.06); border-radius:16px; padding:20px;">
+                            <div
+                                style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+                                <h3 style="color:#f8fafc; margin:0;">🐛 Bugs Reportados</h3>
+                                <button onclick="adminClearBugs()"
+                                    style="background:rgba(239,68,68,0.15); color:#ef4444; border:1px solid rgba(239,68,68,0.3); padding:6px 12px; border-radius:8px; cursor:pointer; font-size:12px;">🗑️
+                                    Limpar</button>
+                            </div>
+                            <table style="width:100%; border-collapse:collapse;">
+                                <thead>
+                                    <tr style="border-bottom:1px solid rgba(255,255,255,0.06);">
+                                        <th style="text-align:left; padding:8px; color:#64748b; font-size:11px;">TIPO
+                                        </th>
+                                        <th style="text-align:left; padding:8px; color:#64748b; font-size:11px;">
+                                            DESCRIÇÃO</th>
+                                        <th style="text-align:left; padding:8px; color:#64748b; font-size:11px;">PÁGINA
+                                        </th>
+                                        <th style="text-align:left; padding:8px; color:#64748b; font-size:11px;">DATA
+                                        </th>
+                                        <th style="padding:8px;"></th>
+                                    </tr>
+                                </thead>
+                                <tbody id="admin-bugs-body"></tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- TAB: MESSAGE REPORTS -->
+                    <div id="admin-tab-reports" class="admin-tab-content" style="display:none;">
+                        <div
+                            style="background:rgba(239,68,68,0.03); border:1px solid rgba(239,68,68,0.1); border-radius:16px; padding:20px;">
+                            <h3 style="color:#ef4444; margin:0 0 16px 0;">🚩 Denúncias de Mensagens (Tempo Real)</h3>
+                            <div id="admin-reports-body"></div>
+                        </div>
+                    </div>
+
+                    <!-- TAB: DANGER ZONE -->
+                    <div id="admin-tab-danger" class="admin-tab-content" style="display:none;">
+                        <div
+                            style="background:rgba(239,68,68,0.05); border:1px solid rgba(239,68,68,0.2); border-radius:16px; padding:24px; max-width:500px;">
+                            <h3 style="color:#ef4444; margin:0 0 8px 0;">⚠️ ZONA DE PERIGO</h3>
+                            <p style="color:#94a3b8; margin:0 0 16px 0; font-size:0.85rem;">Ações destrutivas
+                                irreversíveis. Use com cuidado.</p>
+                            <button onclick="adminResetPopularity()"
+                                style="width:100%; background:rgba(239,68,68,0.15); color:#ef4444; border:1px solid rgba(239,68,68,0.3); padding:14px; border-radius:10px; cursor:pointer; font-weight:700; margin-bottom:8px;">🔥
+                                RESETAR POPULARES DA SEMANA</button>
+                            <button onclick="adminClearAllChangelog()"
+                                style="width:100%; background:rgba(239,68,68,0.15); color:#ef4444; border:1px solid rgba(239,68,68,0.3); padding:14px; border-radius:10px; cursor:pointer; font-weight:700; margin-bottom:8px;">🗑️
+                                LIMPAR TODO CHANGELOG</button>
+                            <button onclick="adminClearAccessLogs()"
+                                style="width:100%; background:rgba(239,68,68,0.15); color:#ef4444; border:1px solid rgba(239,68,68,0.3); padding:14px; border-radius:10px; cursor:pointer; font-weight:700; margin-bottom:8px;">📡
+                                LIMPAR TODOS LOGS</button>
+                            <button onclick="adminClearBugs()"
+                                style="width:100%; background:rgba(239,68,68,0.15); color:#ef4444; border:1px solid rgba(239,68,68,0.3); padding:14px; border-radius:10px; cursor:pointer; font-weight:700;">🐛
+                                LIMPAR TODOS BUGS</button>
+                        </div>
                     </div>
                 </div>
 
@@ -444,10 +755,13 @@
                                     <span class="material-icons-round kord-header-icon">tag</span>
                                     <span id="kord-current-channel-name">Selecione um canal</span>
                                 </div>
-                                <div id="kord-header-call-actions" class="kord-call-actions">
-                                    <button onclick="startKordVoiceCall()" class="kord-join-call-btn">
-                                        <span class="material-icons-round">call</span> Entrar na Call
-                                    </button>
+                                <div style="display:flex; align-items:center; gap:15px; margin-left:auto;">
+                                    <div id="google_translate_element" class="kord-google-trans"></div>
+                                    <div id="kord-header-call-actions" class="kord-call-actions">
+                                        <button onclick="startKordVoiceCall()" class="kord-join-call-btn">
+                                            <span class="material-icons-round">call</span> Entrar na Call
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
 
@@ -484,7 +798,8 @@
                                         onchange="sendKordP2PFile(this)">
 
                                     <input type="text" id="kord-chat-input" class="kord-text-input"
-                                        placeholder="Conversar..." onkeypress="handleKordChatEnter(event)">
+                                        placeholder="Conversar..." onkeypress="handleKordChatEnter(event)"
+                                        oninput="if(typeof KordRT!=='undefined'&&currentKordChannel){let p='';if(currentKordChannel.startsWith('dm:')){p='direct_messages/'+currentKordChannel.replace('dm:','')+'/messages'}else if(currentKordServer!=='home'&&currentKordChannel){p='servers/'+currentKordServer+'/channels/'+currentKordChannel+'/messages'}if(p)KordRT.sendTyping(p)}">
                                     <div class="kord-input-actions">
                                         <button onclick="toggleKordEmojiPicker(event)" class="kord-input-btn">
                                             <span class="material-icons-round">sentiment_satisfied_alt</span>
@@ -518,7 +833,7 @@
                                 </button>
                                 <div class="kord-rtc-divider"></div>
                                 <button onclick="toggleAITranslator()" id="kord-btn-ai-translate"
-                                    class="kord-rtc-btn kord-rtc-btn--ai">
+                                    class="kord-rtc-btn kord-rtc-btn--ai" style="display:none;">
                                     <span class="material-icons-round">translate</span>
                                     <span id="kord-ai-translate-label">IA Tradutor</span>
                                 </button>
@@ -530,6 +845,23 @@
                     </div>
                 </div>
 
+
+                <!-- VIEW: WALLET (Blockchain) -->
+                <div id="view-wallet" style="display:none; padding:20px 40px;">
+                    <div style="display:flex;align-items:center;gap:12px;margin-bottom:24px;">
+                        <div
+                            style="width:48px;height:48px;background:linear-gradient(135deg,#f59e0b,#d97706);border-radius:14px;display:flex;align-items:center;justify-content:center;">
+                            <span class="material-icons-round"
+                                style="color:#fff;font-size:28px;">account_balance_wallet</span>
+                        </div>
+                        <div>
+                            <h1 style="margin:0;font-size:1.6rem;color:#f8fafc;">Kord Wallet</h1>
+                            <p style="margin:0;color:#64748b;font-size:0.85rem;">Carteira cripto descentralizada e
+                                anônima</p>
+                        </div>
+                    </div>
+                    <div id="kord-wallet-content"></div>
+                </div>
 
                 <!-- VIEW: SETTINGS -->
                 <div id="view-settings" style="display: none; padding: 40px;">
@@ -570,8 +902,22 @@
                             </div>
                         </div>
 
+                        <!-- EFFECTS SELECTOR -->
+                        <div class="settings-group" style="margin-top:20px;">
+                            <h4 class="setting-title" style="margin-bottom:4px;">
+                                <span class="material-icons-round"
+                                    style="font-size:20px;vertical-align:middle;margin-right:6px;color:#a78bfa;">auto_awesome</span>
+                                Efeitos Visuais
+                            </h4>
+                            <p class="setting-desc" style="margin-bottom:16px;">Escolha um efeito animado para o fundo
+                                do site</p>
+                            <div id="kord-effects-grid"
+                                style="display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:10px;">
+                            </div>
+                        </div>
+
                         <div class="settings-footer">
-                            <p id="site-version">KORD v1.2.0 - Security & Media Updated</p>
+                            <p id="site-version">KORD v1.2.0 - Security &amp; Media Updated</p>
                         </div>
                     </div>
                 </div>
@@ -586,14 +932,15 @@
                     class="material-icons-round">local_fire_department</span>Popular</a>
             <a href="#" class="mobile-nav-item" onclick="switchView('support'); return false;"><span
                     class="material-icons-round">volunteer_activism</span>Apoiar</a>
-            <a href="#" class="mobile-nav-item" onclick="switchView('kord'); return false;"
-                style="color: #6366f1;"><span class="material-icons-round">voice_chat</span>Kord</a>
             <a href="#" class="mobile-nav-item" onclick="switchView('changelog'); return false;"><span
                     class="material-icons-round">history</span>Updates</a>
-            <a href="#" class="mobile-nav-item" onclick="openBugReport(); return false;" style="color: #f59e0b;"><span
-                    class="material-icons-round">bug_report</span>Bug</a>
+            <a href="#" class="mobile-nav-item" onclick="switchView('wallet'); return false;"
+                style="color: #f59e0b;"><span class="material-icons-round">account_balance_wallet</span>Wallet</a>
             <a href="#" class="mobile-nav-item" onclick="switchView('settings'); return false;"><span
                     class="material-icons-round">settings</span>Ajustes</a>
+            <a href="#" id="admin-nav-mobile" class="mobile-nav-item" onclick="switchView('admin'); return false;"
+                style="display:none; color:#ef4444;"><span
+                    class="material-icons-round">admin_panel_settings</span>Admin</a>
         </nav>
         <!-- FIREBASE REALTIME DATABASE V8 (Stable for simple read/writes) -->
         <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
@@ -616,17 +963,41 @@
         <!-- PayPal JS SDK (Sandbox for testing, switch client-id for live) -->
         <script src="https://www.paypal.com/sdk/js?client-id=sb&currency=BRL&disable-funding=credit,card"></script>
 
+        <!-- ethers.js for Blockchain Wallet -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/ethers/6.13.4/ethers.umd.min.js"></script>
+
         <script src="assets/js/security.js"></script>
         <script src="assets/js/app.js"></script>
         <script src="assets/js/donate.js"></script>
         <script src="assets/js/changelog.js?v=debug2"></script>
 
-        <!-- Kord Web Core Scripts -->
-        <script src="assets/js/theme_engine.js"></script>
+        <!-- Kord Real-Time Engine (must load before core) -->
+        <script src="assets/js/kord_realtime.js"></script>
+
+        <!-- KORD SCRIPTS: Security, Firebase, UI, RTDB, WebRTC -->
+        <script type="text/javascript">
+            function googleTranslateElementInit() {
+                new google.translate.TranslateElement({
+                    pageLanguage: 'pt',
+                    layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
+                    autoDisplay: false
+                }, 'google_translate_element');
+            }
+        </script>
+        <script type="text/javascript"
+            src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+
+        <script src="assets/js/kord_security.js"></script>
         <script src="assets/js/kord_auth.js"></script>
+        <script src="assets/js/theme_engine.js"></script>
+        <script src="assets/js/admin_panel.js"></script>
         <script src="https://unpkg.com/peerjs@1.5.2/dist/peerjs.min.js"></script>
         <script src="assets/js/kord_webrtc.js"></script>
         <script src="assets/js/kord_core.js"></script>
+
+        <!-- Kord Blockchain Wallet -->
+        <script src="assets/js/kord_blockchain.js"></script>
+        <script src="assets/js/kord_wallet_ui.js"></script>
 
         <!-- Login Modal Auth (Polished) -->
         <div id="kordAuthModal"
@@ -979,7 +1350,7 @@
                             </div>
                             <label
                                 style="display:flex; align-items:center; gap:10px; color:#cbd5e1; font-weight:400; margin-top:10px; font-size:0.85rem; cursor:pointer;">
-                                <input type="checkbox" id="kordTranslateTTS"
+                                <input type="checkbox" id="kordTranslateTTS" checked
                                     style="accent-color:var(--primary-color); width:16px; height:16px;">
                                 Ligar Síntese de Voz (Ouvir tradução automaticamente)
                             </label>

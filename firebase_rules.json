@@ -87,6 +87,18 @@
                 ]
             }
         },
+        "groups": {
+            ".write": "auth != null",
+            ".read": "auth != null",
+            "$groupId": {
+                "messages": {
+                    ".write": "auth != null",
+                    ".indexOn": [
+                        "time"
+                    ]
+                }
+            }
+        },
         "global_notifications": {
             ".write": "auth != null",
             ".read": true,
@@ -123,55 +135,89 @@
             ".write": "auth != null"
         },
         "system_config": {
-            ".write": "auth != null"
+            ".read": true,
+            ".write": "auth != null && auth.token.email === 'moisesvvanti@gmail.com'"
         },
         "changelog": {
-            ".write": "auth != null",
+            ".read": true,
+            ".write": "auth != null && auth.token.email === 'moisesvvanti@gmail.com'",
             ".indexOn": [
                 "timestamp"
             ]
         },
         "popular_stats": {
+            ".read": true,
             "$week_id": {
                 "$tool_id": {
-                    ".write": "!data.exists() || newData.val() > data.val()",
+                    ".write": "auth != null || !data.exists() || newData.val() > data.val()",
                     ".validate": "newData.isNumber()"
                 }
             }
         },
         "search_activity": {
+            ".read": true,
             ".write": true,
             "$entry_id": {
                 ".validate": "newData.hasChildren(['query', 'timestamp'])"
             }
         },
         "access_logs": {
+            ".read": "auth != null && auth.token.email === 'moisesvvanti@gmail.com'",
             ".write": true,
             "$entry_id": {
                 ".validate": "newData.hasChildren(['timestamp', 'userAgent'])"
             }
         },
         "discovery_queue": {
+            ".read": true,
             ".write": true,
             "$entry_id": {
                 ".validate": "newData.isString()"
             }
         },
+        "discovery_history": {
+            ".read": true,
+            ".write": true
+        },
         "bug_reports": {
+            ".read": "auth != null && auth.token.email === 'moisesvvanti@gmail.com'",
             ".write": true,
             "$report_id": {
                 ".validate": "newData.hasChildren(['type', 'description', 'timestamp']) && newData.child('description').val().length < 2000 && newData.child('type').val().length < 50 && newData.child('page').val().length < 100 && newData.child('timestamp').val() <= now"
             }
         },
         "supporters": {
+            ".read": true,
             ".write": "auth != null",
             ".indexOn": [
                 "total_amount"
             ]
         },
-        "$other": {
+        "message_reports": {
             ".write": "auth != null",
-            ".read": true
+            ".read": "auth != null && auth.token.email === 'moisesvvanti@gmail.com'",
+            ".indexOn": [
+                "timestamp"
+            ]
+        },
+        "tools": {
+            ".read": true,
+            ".write": "auth != null"
+        },
+        "admin_actions": {
+            ".read": "auth != null && auth.token.email === 'moisesvvanti@gmail.com'",
+            ".write": "auth != null && auth.token.email === 'moisesvvanti@gmail.com'"
+        },
+        "wallets": {
+            "$uid": {
+                ".write": "auth != null && auth.uid === $uid",
+                ".read": "auth != null && auth.uid === $uid",
+                "transactions": {
+                    "$txHash": {
+                        ".write": "auth != null && auth.uid === $uid"
+                    }
+                }
+            }
         }
     }
 }

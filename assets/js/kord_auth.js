@@ -1,4 +1,4 @@
-let currentUser = null;
+var currentUser = null;
 
 document.addEventListener("DOMContentLoaded", () => {
     // Listen for auth state changes
@@ -7,8 +7,16 @@ document.addEventListener("DOMContentLoaded", () => {
             currentUser = user;
             console.log("Usuário logado:", user.email);
             document.getElementById('kordAuthModal').style.display = 'none';
-            // Load user profile from DB
+            // Load user profile from DB (real-time listener)
             loadUserProfile(user.uid);
+
+            // Start real-time presence system
+            if (typeof KordRT !== 'undefined') {
+                KordRT.startPresence();
+            }
+
+            // Initialize admin panel if admin user
+            if (typeof initAdminPanel === 'function') initAdminPanel();
 
             // If in kord view, fetch communities or update UI
             if (document.getElementById('view-kord').style.display === 'flex') {
@@ -17,6 +25,13 @@ document.addEventListener("DOMContentLoaded", () => {
         } else {
             currentUser = null;
             console.log("Nenhum usuário logado.");
+
+            // Stop real-time presence
+            if (typeof KordRT !== 'undefined') {
+                KordRT.stopPresence();
+                KordRT.unsubscribeAll();
+            }
+
             // Show login modal globally - login required for entire site
             document.getElementById('kordAuthModal').style.display = 'flex';
         }
@@ -162,6 +177,17 @@ function closeKordAuthModal() {
 }
 
 function loadUserProfile(uid) {
+    if (typeof checkKordBanStatus === 'function') {
+        checkKordBanStatus().then(banned => {
+            if (banned) return;
+            _proceedLoadUserProfile(uid);
+        });
+    } else {
+        _proceedLoadUserProfile(uid);
+    }
+}
+
+function _proceedLoadUserProfile(uid) {
     // Basic User Node
     firebase.database().ref('users/' + uid).once('value').then((snapshot) => {
         const data = snapshot.val();
@@ -241,6 +267,9 @@ function loadUserProfile(uid) {
                     currentUser.customCSS = data.customCSS;
                     if (typeof applyCustomCSS === 'function') applyCustomCSS(data.customCSS);
                 }
+
+                // Load saved visual effect (fire, smoke, aurora, etc.)
+                if (typeof loadSavedThemeEffect === 'function') loadSavedThemeEffect();
             });
         }
     });
